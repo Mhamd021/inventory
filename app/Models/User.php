@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
  use Laravel\Sanctum\HasApiTokens;
+ use Illuminate\Database\Eloquent\Relations\HasMany;
+ use App\Models\Post;
+ use App\Models\Comment;
+
 class User extends Authenticatable
 {
     use HasFactory, Notifiable,HasApiTokens;
@@ -45,5 +49,15 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function posts() : HasMany
+    {
+        return $this->hasmany(Post::class);
+    }
+
+    public function comments() : HasMany
+    {
+        return $this->hasmany(Comment::class);
     }
 }
