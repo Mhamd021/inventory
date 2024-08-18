@@ -12,10 +12,12 @@ use Illuminate\Notifications\Notifiable;
  use App\Models\Post;
  use App\Models\Comment;
  use \Staudenmeir\LaravelMergedRelations\Eloquent\HasMergedRelationships;
+ use Laravel\Cashier\Billable;
+
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable,HasApiTokens,HasMergedRelationships;
+    use HasFactory, Notifiable,HasApiTokens,HasMergedRelationships,Billable;
 
     /**
      * The attributes that are mass assignable.
