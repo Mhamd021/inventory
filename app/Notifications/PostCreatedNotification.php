@@ -6,19 +6,17 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use App\Models\Journey;
-use App\Events\EditJourney;
-class JourneyEdited extends Notification
+
+class PostCreatedNotification extends Notification
 {
     use Queueable;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct($journey)
+    public function __construct($post)
     {
-
-        $this->journey = $journey;
+        $this->post = $post;
     }
 
     /**
@@ -43,8 +41,8 @@ class JourneyEdited extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            'headline' => $this->journey->headline,
-            'description' => $this->journey->description
+            'created_at' => $this->post->created_at,
+            'user_name' => $this->post->user->name,
         ];
     }
 }

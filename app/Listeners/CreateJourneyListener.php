@@ -8,7 +8,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Log;
 use App\Models\Journey;
 use App\Models\User;
-use App\Notifications\JourneyCreated ;
+use App\Notifications\JourneyCreatedNotification ;
 use Illuminate\Support\Facades\Notification;
 
 class CreateJourneyListener
@@ -28,8 +28,8 @@ class CreateJourneyListener
     {
 
         $users = User::where('is_admin',0)->get();
-        Notification::send($users, new JourneyCreated($event->journey));
-        
+        Notification::send($users, new JourneyCreatedNotification($event->journey));
+
 
 
     }
