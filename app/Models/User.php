@@ -30,7 +30,6 @@ class User extends Authenticatable
         'password',
         'is_admin'
     ];
-    // protected $boolean = ['is_admin'];
 
     /**
      * The attributes that should be hidden for serialization.
