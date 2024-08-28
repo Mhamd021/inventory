@@ -171,9 +171,13 @@ class JourneyController extends Controller
     public function apijourney()
     {
         $jou = Journey::get();
+
         if($jou)
         {
-            return JourneyResource::collection($jou);
+            $journeys = JourneyResource::collection($jou);
+            return response ([
+                "journeys" => $journeys
+            ]);
         }
         else
         {
@@ -185,8 +189,20 @@ class JourneyController extends Controller
 
     public function showjourneyapi(Journey $journey)
     {
+            if($journey)
+            {
+                return response([
+                    "journey" => new  JourneyResource($journey)
+                ]);
 
-            return  new  JourneyResource($journey);
+            }
+            else
+            {
+                return response([
+                    "the journey is missing!"
+                ]);
+            }
+
 
     }
 

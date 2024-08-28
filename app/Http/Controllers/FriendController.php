@@ -19,14 +19,23 @@ class FriendController extends Controller
     {
         $user = User::find(2);
         $friends = $user->friends;
-        // return  FriendResource::collection($friends);
-        return response(
-            [
-                'message' => 'success',
-                'friends' => $friends
-            ]
-        );
-    }
+        if($friends)
+        {
+            return response(
+                [
+                    'message' => 'success',
+                    'friends' => $friends
+                ]
+            );
+        }
+        else
+        {
+            return response([
+                "message" => "you have no friends go ahead and add some friends !"
+            ]);
+        }
+        }
+
 
     /**
      * Show the form for creating a new resource.

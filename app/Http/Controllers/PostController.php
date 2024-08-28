@@ -14,8 +14,27 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::paginate(10);
-        return  PostResource::collection($posts);
+        $posts = Post::all();
+        if($posts)
+        {
+            $api_posts = PostResource::collection($posts);
+
+            return response
+            (
+                [
+                    // "message" => "success" ,
+                    "post" => $api_posts,
+                    // "status" => 200,
+                ]
+                );
+        }
+        else
+        {
+            return response ([
+                "message" => "there are no posts please create one!" ,
+            ]);
+        }
+
     }
 
     /**
@@ -96,7 +115,7 @@ class PostController extends Controller
         $post_delete->delete();
         return response(
             [
-                'message' => 'success',
+                'message' => 'success! the post is deleted',
                 'status' => 200
             ]
         );

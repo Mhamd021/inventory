@@ -14,10 +14,23 @@ class CommentController extends Controller
      */
     public function postcomments(Post $post)
     {
-        $post = Post::find($post->id);
+        $post = Post::findorfail($post->id);
         $comments = $post->comments;
+        if($comments)
+        {
 
-        return CommentResource::collection($comments);
+            return response([
+                "comments" => CommentResource::collection($comments)
+            ]);
+
+        }
+        else
+        {
+            return response([
+                "comments" => "there are no comments on this posts"
+            ]);
+        }
+
 
     }
 
@@ -35,7 +48,10 @@ class CommentController extends Controller
 
         ]);
 
-        return new CommentResource($comment);
+        return response([
+            "message" => "comment created successfully",
+            "comment" => new CommentResource($comment)
+        ]);
 
 
     }
@@ -45,7 +61,19 @@ class CommentController extends Controller
      */
     public function show(Comment $comment)
     {
-        return new CommentResource($comment);
+        if($comment)
+        {
+            return response([
+                "comment" => new CommentResource($comment)
+            ]);
+        }
+        else
+        {
+            return reponse([
+                "error" => error_get_last
+            ]);
+        }
+
     }
 
     public function update(Request $request, Comment $comment)
