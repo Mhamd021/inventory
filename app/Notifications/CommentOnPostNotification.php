@@ -42,7 +42,7 @@ class CommentOnPostNotification extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            'comment_info' => $this->comment->comment_info,
+            'created_at' => $this->comment->created_at,
             'user_name' => $this->comment->user->name,
 
         ];

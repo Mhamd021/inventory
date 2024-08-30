@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Auth;
+use App\Events\PostCreated;
 use App\Http\Resources\Post as PostResource;
 
 class PostController extends Controller
@@ -22,9 +23,9 @@ class PostController extends Controller
             return response
             (
                 [
-                    // "message" => "success" ,
+                    "message" => "success" ,
                     "post" => $api_posts,
-                    // "status" => 200,
+                    "status" => 200,
                 ]
                 );
         }
@@ -42,8 +43,8 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-
+        $validator = $request->validate([
+            'user_id' => ['required'],
             'post_info' => ['required'],
 
         ]);
@@ -59,6 +60,17 @@ class PostController extends Controller
         }
 
         $post = Post::create($attributes);
+
+        event(new PostCreated($post));
+        // foreach($validator as $validate)
+        // {
+        //     if($validate->falis())
+        //     {
+        //         return response()->json([
+        //             "message" => $validate->message(),
+        //         ]);
+        //     }
+        // }
          return new PostResource($post);
     }
 
@@ -67,7 +79,12 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        return new PostResource($post);
+        return response ([
+            'message' => "post retreived" ,
+            'post' => new PostResource($post),
+            'status' => 200
+        ]);
+
     }
 
     /**

@@ -24,7 +24,8 @@ class PostCreatedListener
      */
     public function handle(PostCreated $event): void
     {
-        $users = User::where('is_admin',0)->get();
+        $user = $event->post->user;
+        $users = $user->friends;
         Notification::send($users, new PostCreatedNotification($event->post));
     }
 }

@@ -17,7 +17,7 @@ class FriendController extends Controller
      */
     public function index()
     {
-        $user = User::find(2);
+        $user = User::find(1);
         $friends = $user->friends;
         if($friends)
         {
@@ -124,10 +124,11 @@ class FriendController extends Controller
     {
         $friend_delete = Friend::find($friend->id);
         $friend_delete->delete();
+
         return response(
             [
                 'message' => 'success',
-                'status' => 200
+                'status' => 200,
             ]
         );
     }

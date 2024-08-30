@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 use App\Models\Post;
+use App\Events\CommentOnPost;
 use App\Http\Resources\Comment as CommentResource;
 
 class CommentController extends Controller
@@ -48,6 +49,8 @@ class CommentController extends Controller
 
         ]);
 
+        event(new CommentOnPost($comment));
+
         return response([
             "message" => "comment created successfully",
             "comment" => new CommentResource($comment)
@@ -69,8 +72,8 @@ class CommentController extends Controller
         }
         else
         {
-            return reponse([
-                "error" => error_get_last
+            return response([
+                "error" => 'there are no comments'
             ]);
         }
 

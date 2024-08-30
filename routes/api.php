@@ -12,6 +12,7 @@ use App\Http\Controllers\FriendController;
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
+
 Route::get('postcomments/{post}','App\Http\Controllers\CommentController@postcomments');
 Route::apiResource('posts', PostController::class);
 Route::apiResource('comments', CommentController::class);
