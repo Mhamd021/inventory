@@ -175,8 +175,9 @@ class JourneyController extends Controller
         if($jou)
         {
             $journeys = JourneyResource::collection($jou);
-            return response ([
-                "journeys" => $journeys
+            return response()->json([
+                "journeys" => $journeys,
+
             ]);
         }
         else
@@ -191,14 +192,14 @@ class JourneyController extends Controller
     {
             if($journey)
             {
-                return response([
+                return response()->json([
                     "journey" => new  JourneyResource($journey)
                 ]);
 
             }
             else
             {
-                return response([
+                return response()->json([
                     "the journey is missing!"
                 ]);
             }

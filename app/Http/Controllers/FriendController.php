@@ -21,7 +21,7 @@ class FriendController extends Controller
         $friends = $user->friends;
         if($friends)
         {
-            return response(
+            return response()->json(
                 [
                     'message' => 'success',
                     'friends' => $friends
@@ -30,7 +30,7 @@ class FriendController extends Controller
         }
         else
         {
-            return response([
+            return response()->json([
                 "message" => "you have no friends go ahead and add some friends !"
             ]);
         }
@@ -65,7 +65,7 @@ class FriendController extends Controller
             ]
         );
 
-        return response(
+        return response()->json(
             [
                 'message' => 'success',
                 'status' => 200
@@ -108,7 +108,7 @@ class FriendController extends Controller
                 $friend->status = $request->status;
                 $friend->save();
 
-        return response(
+        return response()->json(
             [
                 'message' => 'success',
                 'friend_status' => $friend,
@@ -125,7 +125,7 @@ class FriendController extends Controller
         $friend_delete = Friend::find($friend->id);
         $friend_delete->delete();
 
-        return response(
+        return response()->json(
             [
                 'message' => 'success',
                 'status' => 200,

@@ -20,14 +20,14 @@ class CommentController extends Controller
         if($comments)
         {
 
-            return response([
+            return response()->json([
                 "comments" => CommentResource::collection($comments)
             ]);
 
         }
         else
         {
-            return response([
+            return response()->json([
                 "comments" => "there are no comments on this posts"
             ]);
         }
@@ -51,7 +51,7 @@ class CommentController extends Controller
 
         event(new CommentOnPost($comment));
 
-        return response([
+        return response()->json([
             "message" => "comment created successfully",
             "comment" => new CommentResource($comment)
         ]);
@@ -66,13 +66,13 @@ class CommentController extends Controller
     {
         if($comment)
         {
-            return response([
+            return response()->json([
                 "comment" => new CommentResource($comment)
             ]);
         }
         else
         {
-            return response([
+            return response()->json([
                 "error" => 'there are no comments'
             ]);
         }
@@ -86,7 +86,7 @@ class CommentController extends Controller
         ]);
         $comment->comment_info = $request->comment_info;
         $comment->save();
-        return response(
+        return response()->json(
             [
                 'message' => 'success',
                 'comment' => $comment,
@@ -101,7 +101,7 @@ class CommentController extends Controller
     {
         $comment_delete = Comment::find($comment->id);
         $comment_delete->delete();
-        return response(
+        return response()->json(
             [
                 'message' => 'success',
                 'status' => 200

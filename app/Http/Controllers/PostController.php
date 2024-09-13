@@ -20,7 +20,7 @@ class PostController extends Controller
         {
             $api_posts = PostResource::collection($posts);
 
-            return response
+            return response()->json
             (
                 [
                     "message" => "success" ,
@@ -31,7 +31,7 @@ class PostController extends Controller
         }
         else
         {
-            return response ([
+            return response()->json([
                 "message" => "there are no posts please create one!" ,
             ]);
         }
@@ -62,15 +62,7 @@ class PostController extends Controller
         $post = Post::create($attributes);
 
         event(new PostCreated($post));
-        // foreach($validator as $validate)
-        // {
-        //     if($validate->falis())
-        //     {
-        //         return response()->json([
-        //             "message" => $validate->message(),
-        //         ]);
-        //     }
-        // }
+
          return new PostResource($post);
     }
 
@@ -79,7 +71,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        return response ([
+        return response()->json([
             'message' => "post retreived" ,
             'post' => new PostResource($post),
             'status' => 200
@@ -112,7 +104,7 @@ class PostController extends Controller
 
             $post->save();
 
-           return response
+           return response()->json
            (
             [
                 'message' => 'success',
@@ -130,7 +122,7 @@ class PostController extends Controller
 
         $post_delete = Post::find($post->id);
         $post_delete->delete();
-        return response(
+        return response()->json(
             [
                 'message' => 'success! the post is deleted',
                 'status' => 200
