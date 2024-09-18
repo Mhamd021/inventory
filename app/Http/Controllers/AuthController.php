@@ -20,8 +20,9 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors());
-        }
+            return response()->json(
+                $validator->errors(),403);
+            }
 
         $user = User::create([
             'name'      => $request->name,
@@ -41,14 +42,14 @@ class AuthController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'email'     => 'required|string|max:255|unique:users',
+            'email'     => 'required|string|max:255|',
             'password'  => 'required|string'
         ]);
 
         $credentials    =   $request->only('email', 'password');
         if (! Auth::attempt($credentials)) {
             return response()->json([
-                'message' => 'User not found'
+                'message' => "These credentials do not match our records."
             ], 401);
         }
         $user   = User::where('email', $request->email)->firstOrFail();

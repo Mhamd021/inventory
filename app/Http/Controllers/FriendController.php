@@ -12,9 +12,7 @@ use App\Http\Resources\Friend as FriendResource;
 
 class FriendController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
         $user = User::find(1);
@@ -31,31 +29,25 @@ class FriendController extends Controller
         else
         {
             return response()->json([
-                "message" => "you have no friends go ahead and add some friends !"
+                "message" => "you have no friends go ahead and add some friends !",
+                404
             ]);
         }
         }
-
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'user_id' => ['required'],
+
+        $validator = Validator::make($request->all(), [
+           'user_id' => ['required'],
             'friend_id' => ['required'],
             'status' => [new Enum(FriendStatus::class)],
-
         ]);
+
+        if ($validator->fails()) {
+            return response()->json(
+                $validator->errors(),403);
+            }
+
 
         $friend = Friend::create(
             [
@@ -73,37 +65,27 @@ class FriendController extends Controller
         );
 
     }
-
-    /**
-     * Display the specified resource.
-     */
     public function show(Friend $friend)
     {
 
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Friend $friend)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Friend $friend)
     {
-        $validated = $request->validate([
-            'status' => [
-                new Enum(FriendStatus::class)
-            ],
 
+        $validator = Validator::make($request->all(),
+        [
+            'status' => [
+                        new Enum(FriendStatus::class)
+                        ]
         ]);
 
 
-
+        if ($validator->fails()) {
+            return response()->json(
+                $validator->errors(),403);
+            }
 
                 $friend->status = $request->status;
                 $friend->save();
@@ -116,10 +98,6 @@ class FriendController extends Controller
             ]
         );
     }
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Friend $friend)
     {
         $friend_delete = Friend::find($friend->id);

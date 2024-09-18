@@ -41,6 +41,10 @@ class CommentController extends Controller
         $validated = $request->validate([
             'comment_info' => ['bail','required','string'],
         ]);
+        // $validator = Validator::make($request->all(),
+        // [
+        //     'comment_info' => ['bail','required','string'],
+        // ]);
 
       $comment =  Comment::create([
             'comment_info' => $request->comment_info,
