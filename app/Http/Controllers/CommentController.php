@@ -10,18 +10,17 @@ use App\Http\Resources\Comment as CommentResource;
 
 class CommentController extends Controller
 {
-    /**
-     * Display a listing of post comments.
-     */
+
     public function postcomments(Post $post)
     {
+
         $post = Post::findorfail($post->id);
         $comments = $post->comments;
         if($comments)
         {
 
             return response()->json([
-                "comments" => CommentResource::collection($comments)
+                "comments" => $comments
             ]);
 
         }
@@ -41,10 +40,6 @@ class CommentController extends Controller
         $validated = $request->validate([
             'comment_info' => ['bail','required','string'],
         ]);
-        // $validator = Validator::make($request->all(),
-        // [
-        //     'comment_info' => ['bail','required','string'],
-        // ]);
 
       $comment =  Comment::create([
             'comment_info' => $request->comment_info,
@@ -57,7 +52,7 @@ class CommentController extends Controller
 
         return response()->json([
             "message" => "comment created successfully",
-            "comment" => new CommentResource($comment)
+            "comment" => $comment
         ]);
 
 
@@ -71,7 +66,7 @@ class CommentController extends Controller
         if($comment)
         {
             return response()->json([
-                "comment" => new CommentResource($comment)
+                "comment" => $comment
             ]);
         }
         else
@@ -94,9 +89,9 @@ class CommentController extends Controller
             [
                 'message' => 'success',
                 'comment' => $comment,
+                'status' => 200
             ]
         );
-
 
     }
 

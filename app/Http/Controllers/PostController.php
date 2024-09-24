@@ -15,16 +15,19 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::all();
+        $posts = Post::with('user:id,name')->get();
+
+        $chunks = $posts->chunk(10);
+
         if($posts)
         {
-            $api_posts = PostResource::collection($posts);
 
             return response()->json
             (
                 [
+
                     "message" => "success" ,
-                    "post" => $api_posts,
+                    "posts" => $posts,
                     "status" => 200,
                 ]
                 );
@@ -46,7 +49,7 @@ class PostController extends Controller
         $validator = $request->validate([
             'user_id' => ['required'],
             'post_info' => ['required'],
-
+            'post_image' => ['file','nullable']
         ]);
 
             $attributes = $request->all();
@@ -63,7 +66,15 @@ class PostController extends Controller
 
         event(new PostCreated($post));
 
-         return new PostResource($post);
+         return response()->json
+         (
+            [
+                'message' => 'created successfully!' ,
+                'post' => $post,
+                'status' => 200
+            ]
+
+         );
     }
 
     /**
@@ -73,7 +84,7 @@ class PostController extends Controller
     {
         return response()->json([
             'message' => "post retreived" ,
-            'post' => new PostResource($post),
+            'post' => $post,
             'status' => 200
         ]);
 
@@ -107,7 +118,7 @@ class PostController extends Controller
            return response()->json
            (
             [
-                'message' => 'success',
+                'message' => 'updated successfully!',
                 'post' => $post,
                 'status' => 200,
             ]

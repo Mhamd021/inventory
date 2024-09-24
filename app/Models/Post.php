@@ -28,7 +28,7 @@ class Post extends Model
 
     public function comments() : HasMany
     {
-        return $this->hasmany(Comment::class);
+        return $this->hasmany(Comment::class)->with('user:id,name');
     }
 
 }
