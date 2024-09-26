@@ -16,18 +16,18 @@ class CommentController extends Controller
 
         $post = Post::findorfail($post->id);
         $comments = $post->comments;
-        if($comments)
+        if($comments->count() == 0)
         {
-
-            return response()->json([
-                "comments" => $comments
+                return response()->json([
+                "message" => "there are no comments on this posts",
             ]);
 
         }
         else
         {
             return response()->json([
-                "comments" => "there are no comments on this posts"
+                "comments" => $comments,
+                "status" => 200
             ]);
         }
 
@@ -51,8 +51,8 @@ class CommentController extends Controller
         event(new CommentOnPost($comment));
 
         return response()->json([
-            "message" => "comment created successfully",
-            "comment" => $comment
+            'message' => 'comment created successfully',
+            'comment' => $comment
         ]);
 
 
@@ -63,22 +63,18 @@ class CommentController extends Controller
      */
     public function show(Comment $comment)
     {
-        if($comment)
-        {
+        $comment = Comment::with('user:id,name')->findorfail($comment->id);
+
             return response()->json([
-                "comment" => $comment
+                'comment' => $comment,
+                'status' => 200 ,
             ]);
-        }
-        else
-        {
-            return response()->json([
-                "error" => 'there are no comments'
-            ]);
-        }
+
+
 
     }
 
-    public function update(Request $request, Comment $comment)
+    public function ModifyComment(Request $request, Comment $comment)
     {
         $validated = $request->validate([
             'comment_info' => ['bail','required','string'],

@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\Enum;
 use Auth;
 use App\Http\Resources\Friend as FriendResource;
+use Illuminate\Support\Facades\Validator;
 
 class FriendController extends Controller
 {

@@ -26,7 +26,10 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::get('postcomments/{post}','App\Http\Controllers\CommentController@postcomments');
 Route::apiResource('posts', PostController::class);
+Route::post('ModifyPost/{post}','App\Http\Controllers\PostController@ModifyPost');
+
 Route::apiResource('comments', CommentController::class);
+Route::post('ModifyComment/{comment}','App\Http\Controllers\CommentController@ModifyComment');
 Route::apiResource('friends', FriendController::class);
 
 Route::get('/journeys','App\Http\Controllers\JourneyController@apijourney');
