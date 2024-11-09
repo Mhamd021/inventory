@@ -6,6 +6,8 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use App\Models\Comment;
+
 
 class CommentOnPostNotification extends Notification
 {
@@ -14,9 +16,11 @@ class CommentOnPostNotification extends Notification
     /**
      * Create a new notification instance.
      */
-    public function __construct($comment)
+    public function __construct(public Comment $comment)
     {
+
         $this->comment = $comment;
+
     }
 
     /**

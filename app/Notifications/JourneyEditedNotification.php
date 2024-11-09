@@ -15,7 +15,7 @@ class JourneyEditedNotification extends Notification
     /**
      * Create a new notification instance.
      */
-    public function __construct($journey)
+    public function __construct(public Journey $journey)
     {
 
         $this->journey = $journey;

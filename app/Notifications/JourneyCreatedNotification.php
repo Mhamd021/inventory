@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Models\Journey;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -14,7 +15,7 @@ class JourneyCreatedNotification extends Notification
     /**
      * Create a new notification instance.
      */
-    public function __construct($journey)
+    public function __construct(public Journey $journey)
     {
         $this->journey = $journey;
     }

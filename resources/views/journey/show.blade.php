@@ -1,5 +1,6 @@
-<x-app-layout>
-    <meta charset="utf-8" />
+  @extends('layouts.app')
+@section('content')
+  <meta charset="utf-8" />
     <title>Getting started with the Mapbox Directions API</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
@@ -57,7 +58,6 @@
 
 
     </div>
-</x-app-layout>
 
 
 <script  type="module">
@@ -74,7 +74,7 @@
     let lat2 = document.getElementById('lat2').value;
     let lng2 = document.getElementById('lng2').value;
     mapboxgl.accessToken =
-        'pk.eyJ1IjoiZG9uMjEiLCJhIjoiY2xramN3d2RkMHRsNzNwa2dmdnIyZnBxMiJ9.ZXAz_MdYN4tANHbAALm5KQ ';
+        'pk.eyJ1IjoiZG9uMjEiLCJhIjoiY20yOTZtMjhoMDB3YzJqczc2YWhtenJrNiJ9.IKwkfvJWrxOZkYBlwsAhNA';
     const map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/mapbox/streets-v12',
@@ -200,6 +200,7 @@
 
 
 
+@endsection
 
 
 
@@ -212,14 +213,3 @@
 
 
 
-{{-- <x-app-layout>
-
-
-    <div class="parent">
-        <div class="map" id="map"></div>
-    </div>
-
-
-
-
-</x-app-layout> --}}

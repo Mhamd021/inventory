@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -14,7 +15,7 @@ class NewUserNotification extends Notification
     /**
      * Create a new notification instance.
      */
-    public function __construct($user)
+    public function __construct(public User $user)
     {
         $this->user = $user;
     }

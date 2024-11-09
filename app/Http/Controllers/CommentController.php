@@ -16,20 +16,11 @@ class CommentController extends Controller
 
         $post = Post::findorfail($post->id);
         $comments = $post->comments;
-        if($comments->count() == 0)
-        {
-                return response()->json([
-                "message" => "there are no comments on this posts",
+            return response()->json([
+
+                "count" => $comments->count()
             ]);
 
-        }
-        else
-        {
-            return response()->json([
-                "comments" => $comments,
-                "status" => 200
-            ]);
-        }
 
 
     }

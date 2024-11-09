@@ -1,119 +1,129 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            Edit Journey
-        </h2>
-    </x-slot>
-    {{-- <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
-        integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" /> --}}
+@extends('layouts.app')
+@section('content')
     <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
     <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet" />
-    <link rel="stylesheet" href="{{ asset('test.css') }}">
+
 
     <form class="F" action="{{ route('journey.update', $journey) }}" method="POST">
         @csrf
         @method('PUT')
-        <div class="parent">
-            <div class="first">
-                <div class="coord">
-                    <h1 style="color: #78c6ad">Specifing the road</h1><br>
-                    <h1> please enter the first and the second point from the map </h1><br>
-                    <p class="text-gray-700" id="first-p"> first point</p>
-                    <input class="input" name="start_lat" type="text" id="lat"
-                        value="{{ $journey->start_point->latitude }}" required><br>
-
-                    <input class="input" name="start_lng" type="text" id="lng"
-                        value="{{ $journey->start_point->longitude }}" required><br>
-                    <button hidden id="go-back" class="btn-primary">
-                        <p style="color: white">Go_back</p>
-                    </button>
-                    <button id="save-first-point" class="btn-primary" >
-                        <p style="color: white">Save</p>
-                    </button>
-                    <p hidden id="map-message">please enter a point on the map to change the values</p>
-                    <p hidden class="text-gray-700" id="second-p"> second point</p>
-                    <input class="input" hidden name="end_lat" type="text" id="lat2"
-                        value="{{ $journey->end_point->latitude }}" required><br>
-                    <input class="input" hidden name="end_lng" type="text" id="lng2"
-                        value="{{ $journey->end_point->longitude }}" required><br>
-                    <button hidden id="save-second-point" class="btn-primary">
-                        <p style="color: white">Save</p>
-                    </button>
-                    <button hidden class="btn-primary" id="go-back2">
-                        <p style="color: white">Go_back2</p>
-                    </button>
-                </div>
-                <div id="map" class="map"></div>
-
-            </div>
-            <div class="second">
-                <div class="left">
-                    <h1 style="color: #78c6ad">Editing journey information</h1><br>
-                    <p>Headline</p>
-                    <input class="input" type="text" name="headline" value="{{ $journey->headline }}" required><br>
-
-                    <p>Start Date</p>
-                    <input class="input" type="date" name="start_day" value="{{ $journey->start_day }}"
-                        required><br>
-
-                    <p>End Date</p>
-
-                    <input class="input" type="date" name="last_day" value="{{ $journey->last_day }}" required><br>
-
-                    <button type="submit" class="btn-primary" >
-                        <p style="color: white">Save Journey</p>
-                    </button>
-                    {{-- <x-primary-button>{{ __('Save Journey') }}</x-primary-button> --}}
-
-
-                </div>
-                <div class="right">
-                    <h1 style="color: #78c6ad">Click the Save button after you finish editing</h1><br>
-
-                    <p>Description</p>
-                    <input class="input" type= "text" name="description" value="{{ $journey->description }}"
-                        required><br>
-
-                    <p>journey charg</p>
-                    <input class="input" type="number" name="journey_charg" value="{{ $journey->journey_charg }}"
-                        required><br>
-
-
-                    <p>Max Number</p>
-                    <input class="input" type="number" name="max_number" value="{{ $journey->max_number }}"
-                        required><br>
-
-                </div>
-            </div>
-
-
-
-        </div>
-        {{-- <button class="btn-cancel"><a href="{{ route('journey.show', compact('journey')) }}">Cancel</a></button> --}}
-    </form>
-
-    <form class="F" action="{{ route('journey.destroy', $journey) }}" method="POST">
-        @csrf
-        @method('delete')
-        <div class="delete">
-            <div class="delete2">
-                <h1 class="deleteh1">
-                    Delete journey
-                </h1><br>
-                <p>you can find deleted journeys in trashed folder and restore it</p><br>
-                <button type="submit" class="btn-delete" >
-                    <p style="color: white">Delete Journey</p>
-                </button>
-            </div>
-
+    <div class="create">
+        <p>headline</p>
+        <input class="form-input" type="text" name="headline" value= "{{$journey->headline}}" required />
+        @error('headline')
+        <span class="invalid-feedback" role="alert">
+            <strong style="color: red">{{ $message }}</strong>
+        </span>
+    @enderror
+        <p>start-date</p>
+        <input class="form-input" type="date" name="start_day" value="{{$journey->start_day}}" required />
+        @error('start_day')
+        <span class="invalid-feedback" role="alert">
+            <strong style="color: red">{{ $message }}</strong>
+        </span>
+    @enderror
+        <p>end-date</p>
+        <input class="form-input" type="date" name="last_day" value="{{$journey->last_day}}" required />
+        @error('last_day')
+        <span class="invalid-feedback" role="alert">
+            <strong style="color: red">{{ $message }}</strong>
+        </span>
+    @enderror
+        <p>description</p>
+        <input class="form-input" type="text" name="description" value="{{$journey->description}}" required />
+        @error('description')
+        <span class="invalid-feedback" role="alert">
+            <strong style="color: red">{{ $message }}</strong>
+        </span>
+    @enderror
+        <p>charg</p>
+        <input class="form-input" type="number" name="journey_charg" value="{{ $journey->journey_charg}}" required />
+        @error('journey_charg')
+        <span class="invalid-feedback" role="alert">
+            <strong style="color: red">{{ $message }}</strong>
+        </span>
+    @enderror
+        <p>max_number</p>
+        <input class="form-input" type="number" name="max_number" value="{{ $journey->max_number}}" required />
+        @error('max_number')
+        <span class="invalid-feedback" role="alert">
+            <strong style="color: red">{{ $message }}</strong>
+        </span>
+    @enderror
+        <div class="input-container">
+            <button style="color: white" onclick="openMap('lat1', 'lng1')">point1</button>
+           <div>
+            <input type="text" id="lat1" placeholder="Latitude" name="start_lat" value="{{ $journey->start_point->latitude }}" readonly required>
+            @error('start_lat')
+            <span class="invalid-feedback" role="alert">
+                <strong style="color: red">{{ $message }}</strong>
+            </span>
+        @enderror
+            <input type="text" id="lng1" placeholder="Longitude" name="start_lng" value="{{ $journey->start_point->longitude }}" readonly required>
+            @error('start_lng')
+            <span class="invalid-feedback" role="alert">
+                <strong style="color: red">{{ $message }}</strong>
+            </span>
+        @enderror
+           </div>
         </div>
 
-    </form>
-    <script type="text/javascript">
+        <div class="input-container">
+            <button style="color: white" class="save" onclick="openMap('lat2', 'lng2')">point2</button>
+            <div>
+                <input type="text" id="lat2" placeholder="Latitude" name="end_lat" value="{{ $journey->end_point->latitude }}" readonly>
+            @error('end_lat')
+            <span class="invalid-feedback" role="alert">
+                <strong style="color: red">{{ $message }}</strong>
+            </span>
+        @enderror
+            <input type="text" id="lng2" placeholder="Longitude" name="end_lng" value="{{ $journey->end_point->longitude }}" readonly>
+            @error('end_lng')
+            <span class="invalid-feedback" role="alert">
+                <strong style="color: red">{{ $message }}</strong>
+            </span>
+        @enderror
+            </div>
+        </div>
+
+        <div id="mapModal" class="modal">
+            <div class="modal-content">
+
+                <p>Please Choose your point on the map</p>
+                <div id="map" class="map-container"></div>
+                <button id="saveButton" onclick="savePoint()">Save Point</button>
+            </div>
+        </div>
+
+        <div class="save_cancel">
+            <button style="color: white" class="save" type="submit"><i style="color: white" class="fas fa-check-circle">&nbsp;</i> save</button>
+            <button class="cancel" type="button"><i style="color: white" class="fas fa-times-circle"></i><a style="text-decoration: none ; color:white"
+                    href="{{ route('dashboard') }}"> cancel</a></button>
+                    <form class="F" action="{{ route('journey.destroy', $journey) }}" method="POST">
+                        @csrf
+                        @method('delete')
+                                <button type="submit" class="save" >
+                                    <i class="fas fa-trash"></i>  delete
+                                </button>
+
+
+                    </form>
+        </div>
+
+    </div>
+
+</form>
+<script type="text/javascript">
+    let marker;
+
+    function openMap(latInputId, lngInputId) {
+        const latField = document.getElementById(latInputId);
+        const lngField = document.getElementById(lngInputId);
+        document.getElementById('mapModal').style.display = 'flex';
+        event.preventDefault();
+
         mapboxgl.accessToken =
-            'pk.eyJ1IjoiZG9uMjEiLCJhIjoiY2xramN3d2RkMHRsNzNwa2dmdnIyZnBxMiJ9.ZXAz_MdYN4tANHbAALm5KQ ';
+            'pk.eyJ1IjoiZG9uMjEiLCJhIjoiY20yOTZtMjhoMDB3YzJqczc2YWhtenJrNiJ9.IKwkfvJWrxOZkYBlwsAhNA';
         const map = new mapboxgl.Map({
             container: 'map',
             style: 'mapbox://styles/mapbox/streets-v12',
@@ -159,61 +169,18 @@
                     }
                 });
             }
-            // this method is made for the save button to first point
-            document.getElementById('save-first-point').onclick = function(event) {
-                document.getElementById('lat').value = coords[0];
-                document.getElementById('lng').value = coords[1];
-
-                document.getElementById('lat').style.display = 'none';
-                document.getElementById('lng').style.display = 'none';
-
-
-                document.getElementById('save-second-point').style.display = "block";
-                document.getElementById('lat2').style.display = 'block';
-                document.getElementById('lng2').style.display = 'block';
-                document.getElementById('go-back').style.display = 'block';
-                document.getElementById('save-first-point').style.display = "none";
-                event.preventDefault();
-
-
-            }
-            //the method to reEnter the first point
-            document.getElementById('go-back').onclick = function(event) {
-                document.getElementById('lat').style.display = 'block';
-                document.getElementById('lng').style.display = 'block';
-                document.getElementById('save-first-point').style.display = "block";
-                document.getElementById('save-second-point').style.display = "none";
-                document.getElementById('lat2').style.display = 'none';
-                document.getElementById('lng2').style.display = 'none';
-                document.getElementById('go-back').style.display = 'none';
-                event.preventDefault();
-            }
-            //this method to save the second point
-            document.getElementById('save-second-point').onclick = function(event) {
-                document.getElementById('lat2').value = coords[0];
-                document.getElementById('lng2').value = coords[1];
-                document.getElementById('lat2').style.display = 'none';
-                document.getElementById('lng2').style.display = 'none';
-                document.getElementById('save-second-point').style.display = 'none';
-                document.getElementById('go-back2').style.display = 'block';
-                event.preventDefault();
-
-            }
-            document.getElementById('go-back2').onclick = function(event) {
-                document.getElementById('lat').style.display = 'none';
-                document.getElementById('lng').style.display = 'none';
-                document.getElementById('save-first-point').style.display = "none";
-                document.getElementById('save-second-point').style.display = "block";
-                document.getElementById('lat2').style.display = 'block';
-                document.getElementById('lng2').style.display = 'block';
-                document.getElementById('go-back2').style.display = 'none';
-                event.preventDefault();
-            }
-
+            latField.value = coords[1];
+            lngField.value = coords[0];
         });
 
 
-    </script>
-    
+    }
 
-</x-app-layout>
+    function savePoint() {
+        document.getElementById('mapModal').style.display = 'none';
+        event.preventDefault();
+    }
+</script>
+
+@endsection
+

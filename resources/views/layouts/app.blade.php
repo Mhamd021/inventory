@@ -1,4 +1,57 @@
 <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="csrf-token" content="{{ csrf_token() }}">
+<link rel="stylesheet" href="{{asset('applayout.css')}}" type="text/css" media="all" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="left">
+    <a class="open-sidebar" onclick="toggleSidebar()" >☰</a>
+    <a href="{{ route('dashboard') }}"><i class="fas fa-home"></i></a>
+     <div class="dropdown">
+    <a href="javascript:void(0)" class="dropbtn" id="folded">Journeys</a>
+      <div class="dropdown-content">
+       <a href="{{route('journey.create')}}">create   <i class="fas fa-plus-circle icon"></i></a>
+    <a href="{{route('journey.index')}}">journeys  <i class="fas fa-location icon"></i></a>
+    <a href="{{route('journey.trash')}}">trashed  <i class="fas fa-trash icon"></i></a>
+    </div>
+     </div>
+      <a href="#services" id="folded">Contact</a>
+  </div>
+  @if (auth()->check())
+  <div class="dropdown">
+    <a href="javascript:void(0)" class="dropbtn">{{Auth::user()->name}}</a>
+    <div class="dropdown-content">
+      <a href="{{route('profile.edit')}}">Profile</a>
+      <form method="POST" action="{{ route('logout') }}">
+        @csrf
+      <button type="submit">Logout </button>
+
+      </form>
+
+    </div>
+  </div>
+  @else
+  <a href="{{route('login')}}">Login</a>
+
+  @endif
+</div>
+<main>
+@yield('content')
+</main>
+</body>
+
+</html>
+
+
+
+{{-- <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
@@ -33,23 +86,5 @@
             </main>
         </div>
     </body>
-    {{-- <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <script >
 
-      // Enable pusher logging - don't include this in production
-      Pusher.logToConsole = true;
-
-      var pusher = new Pusher('7c415ea90b098cf04fd2', {
-        cluster: 'ap2'
-      });
-
-      var channel = pusher.subscribe('EditJourney-channel');
-      channel.bind('EditJourney', function(data) {
-        toastr.success(JSON.stringify(data));
-
-      });
-    </script> --}}
-</html>
+</html> --}}

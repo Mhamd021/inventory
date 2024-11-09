@@ -1,8 +1,10 @@
-<x-app-layout>
-
+@extends('layouts.app')
+@section('content')
     <link rel="stylesheet" href="{{asset('table.css')}}">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+
     <div class="parent">
     <main class="table">
         <section class="table__header">
@@ -23,7 +25,7 @@
         <tbody>
 
 
-
+        @if ($trashed_journeys->count() != null)
   @foreach ($trashed_journeys as $journey)
 <tr>
 
@@ -38,6 +40,9 @@
 
           </tr>
 @endforeach
+@else
+<td>there is no trash <i class="fas fa-trash"></i></td>
+@endif
         </tbody>
       </table>
       </section>
@@ -46,6 +51,5 @@
 
 </div>
 
-
-</x-app-layout>
+@endsection
 

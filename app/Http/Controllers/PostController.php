@@ -11,25 +11,35 @@ use Illuminate\Support\Facades\Validator;
 
 class PostController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
+
+
     public function index()
     {
+
         $posts = Post::with('user:id,name')->get();
+        // $posts = Post::withCount(['likes as liked' => function ($query) use ($user_id)
+        // {
+        //     $query->where('user_id',$user_id);
+        // }])->get();
 
-        $chunks = $posts->chunk(10);
+        // $posts->transform(function($post)
+        // {
+        //     $post->liked = $post->liked > 0 ;
+        //     return $post;
+        // });
 
-        if ($posts) {
 
+
+        if ($posts->count() != 0) {
             return response()->json(
-                    [
+                [
 
-                        "message" => "success",
-                        "posts" => $posts,
-                        "status" => 200,
-                    ]
-                );
+                    "message" => "success",
+                    "posts" => $posts,
+                    "status" => 200,
+                ]
+            );
         } else {
             return response()->json([
                 "message" => "there are no posts please create one!",
@@ -44,38 +54,32 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $validator = $request->validate([
-            'user_id' => ['required'],
             'post_info' => ['required'],
             'post_image' => ['file', 'nullable']
         ]);
 
         $attributes = $request->all();
-
+        $attributes['user_id'] = auth('sanctum')->user()->id;
         if ($request->hasFile('post_image')) {
             $image = $request->post_image;
             $newImage = time() . $image->getClientOriginalName();
             $image->move('uploads/posts', $newImage);
             $attributes['post_image'] = 'uploads/posts/' . $newImage;
         }
-
         $post = Post::create($attributes);
-
         event(new PostCreated($post));
-
         return response()->json(
-                [
-                    'message' => 'created successfully!',
-                    'post' => $post,
-                    'status' => 200
-                ]
-
-            );
+            [
+                'message' => 'created successfully!',
+                'post' => $post,
+                'status' => 200
+            ]
+        );
     }
     public function ModifyPost(Request $request, Post $post)
     {
-
         $validator = Validator::make($request->all(), [
-            'user_id' => ['required'],
+
             'post_info' => ['required'],
 
         ]);
@@ -86,8 +90,6 @@ class PostController extends Controller
                 403
             );
         }
-
-
         if ($request->hasFile('post_image')) {
             $image = $request->post_image;
             $newImage = time() . $image->getClientOriginalName();
@@ -98,17 +100,15 @@ class PostController extends Controller
         $post->post_info = $request->post_info;
         $post->save();
         return response()->json(
-                [
-                    'message' => 'updated successfully!',
-                    'post' => $post,
-                    'status' => 200,
-                ]
-            );
+            [
+                'message' => 'updated successfully!',
+                'post' => $post,
+                'status' => 200,
+            ]
+        );
     }
 
-    /**
-     * Display the specified resource.
-     */
+
     public function show(Post $post)
     {
 
@@ -120,14 +120,6 @@ class PostController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Post $post)
     {
         $post_delete = Post::find($post->id);
@@ -139,6 +131,4 @@ class PostController extends Controller
             ]
         );
     }
-
-
 }

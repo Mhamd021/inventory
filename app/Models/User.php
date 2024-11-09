@@ -11,6 +11,7 @@ use Illuminate\Notifications\Notifiable;
  use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  use App\Models\Post;
  use App\Models\Comment;
+ use App\Models\Like;
  use \Staudenmeir\LaravelMergedRelations\Eloquent\HasMergedRelationships;
  use Laravel\Cashier\Billable;
 
@@ -62,6 +63,10 @@ class User extends Authenticatable
     public function comments() : HasMany
     {
         return $this->hasmany(Comment::class);
+    }
+    public function likes() : HasMany
+    {
+        return $this->hasmany(Like::class)->with('post');
     }
 
     public function friends()

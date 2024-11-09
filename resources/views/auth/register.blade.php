@@ -1,4 +1,41 @@
-<x-guest-layout>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>register</title>
+    <link rel="stylesheet" href="{{asset('login.css')}}">
+</head>
+<body>
+    <div class="container">
+        <div class="login-box">
+            <img src="logo.png"/>
+            <form method="POST" action="{{ route('register') }}">
+                @csrf
+               <input type="text" id="name" name="name" placeholder="Name"  required>
+               <x-input-error :messages="$errors->get('name')" class="mt-2" />
+                <input type="email" id="username" name="email"   autocomplete= "off" placeholder="Email" required>
+                <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                <input type="password" id="password" name="password" placeholder="Password"  autocomplete="new-password"  required>
+                <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                <input type="password" id="password" name="password_confirmation" placeholder="password_confirmation"  required>
+                <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+
+
+                <div class="button">
+                  <button type="submit">Register</button>
+                </div>
+                 <div class="button">
+                 <a href="{{route('login')}}">have an account already?</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
+
+
+{{-- <x-guest-layout>
     <form method="POST" action="{{ route('register') }}">
         @csrf
 
@@ -49,4 +86,4 @@
             </x-primary-button>
         </div>
     </form>
-</x-guest-layout>
+</x-guest-layout> --}}

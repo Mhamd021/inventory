@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Models\Post;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -14,7 +15,7 @@ class PostCreatedNotification extends Notification
     /**
      * Create a new notification instance.
      */
-    public function __construct($post)
+    public function __construct(public Post $post)
     {
         $this->post = $post;
     }

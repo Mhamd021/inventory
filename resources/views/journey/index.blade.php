@@ -1,5 +1,5 @@
-<x-app-layout>
-
+    @extends('layouts.app')
+    @section('content')
     <link rel="stylesheet" href="{{asset('table.css')}}">
     <div class="parent">
     <main class="table">
@@ -40,9 +40,8 @@
         </section>
     </main>
 </div>
+@endsection
 
-
-</x-app-layout>
 
 
 

@@ -23,9 +23,7 @@ class JourneyController extends Controller
         return view('journey.index',compact('journeys'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+  
     public function create()
     {
         return view('journey.create');
