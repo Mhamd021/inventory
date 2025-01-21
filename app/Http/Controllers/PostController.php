@@ -3,109 +3,84 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
-use Illuminate\Http\Request;
-use Auth;
 use App\Events\PostCreated;
-use App\Http\Resources\Post as PostResource;
-use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\PostRequest;
+use App\Services\ImageService;
 
 class PostController extends Controller
 {
 
+    protected $imageService;
 
+    public function __construct(ImageService $imageService)
+    {
+         $this->imageService = $imageService;
+    }
 
     public function index()
     {
-
         $posts = Post::with('user:id,name')->get();
-        // $posts = Post::withCount(['likes as liked' => function ($query) use ($user_id)
-        // {
-        //     $query->where('user_id',$user_id);
-        // }])->get();
-
-        // $posts->transform(function($post)
-        // {
-        //     $post->liked = $post->liked > 0 ;
-        //     return $post;
-        // });
-
-
-
-        if ($posts->count() != 0) {
-            return response()->json(
-                [
-
-                    "message" => "success",
-                    "posts" => $posts,
-                    "status" => 200,
-                ]
-            );
-        } else {
-            return response()->json([
-                "message" => "there are no posts please create one!",
-
-            ]);
-        }
+        return response()->stream(
+            function () use ($posts) {
+                echo json_encode(['posts' => $posts]);
+            },
+            200,
+            ['Content-Type' => 'application/json']
+        );
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(PostRequest $request)
     {
-        $validator = $request->validate([
-            'post_info' => ['required'],
-            'post_image' => ['file', 'nullable']
-        ]);
+
 
         $attributes = $request->all();
         $attributes['user_id'] = auth('sanctum')->user()->id;
         if ($request->hasFile('post_image')) {
-            $image = $request->post_image;
-            $newImage = time() . $image->getClientOriginalName();
-            $image->move('uploads/posts', $newImage);
-            $attributes['post_image'] = 'uploads/posts/' . $newImage;
+            $attributes['post_image'] = $this->imageService->upload($request->post_image,'uploads/posts');
         }
+
         $post = Post::create($attributes);
         event(new PostCreated($post));
+
         return response()->json(
             [
                 'message' => 'created successfully!',
-                'post' => $post,
-                'status' => 200
-            ]
-        );
-    }
-    public function ModifyPost(Request $request, Post $post)
-    {
-        $validator = Validator::make($request->all(), [
-
-            'post_info' => ['required'],
-
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(
-                $validator->errors(),
-                403
-            );
-        }
-        if ($request->hasFile('post_image')) {
-            $image = $request->post_image;
-            $newImage = time() . $image->getClientOriginalName();
-            $image->move('uploads/posts/', $newImage);
-            $post->post_image = 'uploads/posts/' . $newImage;
-        }
-
-        $post->post_info = $request->post_info;
-        $post->save();
-        return response()->json(
-            [
-                'message' => 'updated successfully!',
-                'post' => $post,
+                'post' => $post->customToArray(),
                 'status' => 200,
             ]
         );
+    }
+
+    public function ModifyPost(PostRequest $request, Post $post)
+    {
+
+        if (auth('sanctum')->user()->id == $post->user->id)
+        {
+
+            if ($request->hasFile('post_image')) {
+
+                if ($post->post_image && file_exists($post->post_image))
+                 {
+                    $this->imageService->delete($post->post_image);
+                 }
+                 
+                $post->post_image = $this->imageService->upload($request->post_image,'uploads/posts');
+            }
+
+            $post->post_info = $request->post_info;
+            $post->save();
+            // $post->makeHidden(['user']);
+
+            return response()->json(
+                [
+                    'message' => 'updated successfully!',
+                    'post' => $post->customToArray(),
+                    'status' => 200,
+                ]
+            );
+        } else {
+            return response()->json([ 'message' => 'You are not authorized to modify this post', ], 403);
+        }
     }
 
 
@@ -122,7 +97,10 @@ class PostController extends Controller
 
     public function destroy(Post $post)
     {
+
+
         $post_delete = Post::find($post->id);
+        if (auth('sanctum')->user()->id == $post_delete->user_id) {
         $post_delete->delete();
         return response()->json(
             [
@@ -130,5 +108,10 @@ class PostController extends Controller
                 'status' => 200
             ]
         );
+        } else {
+            return response()->json([
+                'messages' => 'you are not authorized to delete this post',
+            ]);
+        }
     }
 }

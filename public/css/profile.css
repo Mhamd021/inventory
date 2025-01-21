@@ -1,0 +1,327 @@
+.profile_header {
+    display: flex;
+    flex-direction: column;
+    height: 70vh;
+    width: 100vw;
+    border: 1px solid black;
+    align-items: center;
+}
+
+.uppercase {
+    text-transform: uppercase;
+    font-weight: bold;
+    margin: 10px;
+}
+
+i {
+    cursor: pointer;
+}
+
+.cover {
+    height: 50vh;
+    width: 90vw;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    border: 1px solid black;
+}
+
+.cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.user_information {
+    height: 20vh;
+    width: 90vw;
+    display: flex;
+    justify-content: space-between;
+}
+
+.name_image {
+    display: flex;
+    flex-direction: row;
+    margin: 5px;
+}
+
+.profile-image {
+    height: 220px;
+    width: 220px;
+    border-radius: 50%;
+    object-fit: fill;
+    margin: 10px;
+    transform: translateY(-130px);
+    border: 1px solid black;
+}
+
+@media (max-width: 600px) {
+    .cover {
+        height: 20vh;
+        width: 100%;
+    }
+
+    .name_image {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .profile-image {
+        height: 150px;
+        width: 150px;
+        transform: translateY(-75px);
+    }
+
+    .edit_button {
+        height: 20px;
+        width: 20px;
+        transform: translatex(-70px);
+
+    }
+
+    .user_information {
+        flex-direction: column;
+        align-items: center;
+        height: auto;
+    }
+}
+
+.edit_cover {
+    height: 30px;
+    width: 50px;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    object-fit: cover;
+    border: 1px solid black;
+    cursor: pointer;
+    transform: translateX(-10px);
+    margin: 10px;
+}
+
+.edit_button {
+    height: 45px;
+    width: 45px;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid black;
+    cursor: pointer;
+    position: absolute;
+}
+
+.edit_cover:hover,
+.edit_button:hover,
+.edit_button:focus,
+.edit_cover:focus {
+    background-color: #3c8eb4c3;
+    color: white;
+    border: 1px solid white;
+}
+
+.image-preview {
+    z-index: 1000;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    max-width: 500px;
+    max-height: 400px;
+    display: block;
+    margin: auto;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    border: 1px solid #888;
+    max-width: 600px;
+    max-height: 600px;
+    position: relative;
+    text-align: center;
+}
+
+.close {
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+    align-content: flex-end;
+}
+
+.close button {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 5px;
+    font-size: 1.5rem;
+    position: relative;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.close button::before {
+    content: '\00D7';
+    font-weight: bold;
+}
+
+.close button:hover {
+    background-color: rgb(208, 61, 103);
+    color: white;
+    transform: scale(1.1);
+}
+
+.file-input {
+    display: none;
+}
+
+.file-label {
+    display: block;
+    padding: 7px 17px;
+    background-color: #3c8eb4c3;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+    margin-top: 10px;
+}
+
+.file-label:hover {
+    background-color: #3c8eb4c3;
+    transform: translateY(-5px);
+    transition: 0.2s ease;
+    box-shadow: 3px 3px 8px grey;
+}
+
+.modal-personal-contact {
+    background-color: #fefefe;
+    border: 1px solid #888;
+    width: 540px;
+    height: auto;
+    border-radius: 10px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.modal-personal-contact input[type="text"],
+.modal-personal-contact input[type="email"],
+.modal-personal-contact input[type="date"],
+.modal-personal-contact input[type="password"],
+select {
+    height: 35px;
+    width: 90%;
+    border-radius: 5px;
+    border: 1px solid grey;
+    margin-left: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.modal-personal-contact input[type="radio"] {
+    height: 30px;
+    width: 30px;
+    border: 1px solid grey;
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+
+.modal-personal-contact label {
+    display: block;
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+
+.modal-personal-contact input:focus {
+    outline: none;
+    border-color: #3c8eb4c3;
+}
+
+.gender {
+    padding: 5px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.motion:hover {
+    animation: moving 2s;
+}
+
+@keyframes moving {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    50% {
+        transform: translateX(10px);
+    }
+}
+
+.edit_personal {
+    height: 30px;
+    width: auto;
+    background-color: #888;
+    color: white;
+    margin: 10px;
+    border-radius: 5px;
+    border: none;
+    padding: 3px;
+}
+
+.error {
+    color: rgb(192, 34, 76);
+}
+
+.message_modal {
+    display: flex;
+    position: fixed;
+    z-index: 1050;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    box-shadow: 3px 3px 8px grey;
+}
+
+.message-modal-content {
+    background-color: #21242f;
+    color: #f1f2f4;
+    border: 1px solid #888;
+    width: 500px;
+    height: auto;
+    padding: 5px;
+    position: relative;
+    box-shadow: 0 0.075em 1em #0b0c0e4d;
+    border-radius: 1em;
+    text-align: center;
+}
+
+.message-modal-content .delete:hover {
+    box-shadow: 3px 3px 8px rgb(208, 61, 103);
+}
+
+.message-modal-content .cancel:hover {
+    box-shadow: 3px 3px 8px yellow;
+}
+
+.space i {
+    font-size: xx-large;
+}

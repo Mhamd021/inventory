@@ -44,7 +44,7 @@ class JourneyCreatedNotification extends Notification
     {
         return [
             'headline' => $this->journey->headline,
-            'start_at' => $this->journey->start_day
+            'created_at' => $this->journey->start_day
         ];
     }
 }

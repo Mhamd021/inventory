@@ -1,0 +1,374 @@
+
+*
+{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+h1
+{
+    font-weight: bolder;
+    color: #fff;
+}
+
+.navbar
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #3c8eb4c3;
+    padding: 10px 20px;
+    z-index: 1000;
+}
+
+.navbar .left, .navbar .right
+{
+    display: flex;
+    align-items: center;
+}
+
+.navbar a, .navbar button,.dropdown a, .dropdown-content a, .dropdown-content button
+{
+    text-decoration: none;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin: 0 5px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.navbar a:hover, .navbar button:hover,.dropdown a:hover,.dropbt:hover ,.dropdown-content a:hover, .dropdown-content button:hover
+{
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-5px);
+}
+
+@media (max-width: 1024px)
+{
+    .navbar
+    {
+        justify-content: center;
+    }
+
+    .navbar .left {
+        justify-content: flex-start;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .search-form {
+        margin: 10px 0;
+        flex-grow: 0;
+    }
+
+    .navbar .right {
+        justify-content: flex-end;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+
+@media (max-width: 600px)
+{
+    .search-form {
+        display: none;
+    }
+
+    .navbar .left, .navbar .right {
+        width: 100%;
+        justify-content: center;
+        margin: 5px 0;
+    }
+
+    .navbar .left a, .navbar .right a {
+        margin: 5px;
+    }
+    
+}
+
+.dropdown
+{
+    display: inline-block;
+    position: relative;
+}
+
+.dropdown-content-left
+{
+    left: 0;
+    right: auto;
+}
+
+.dropdown-content-right
+{
+    right: 0;
+    left: auto;
+}
+.dropdown a, .dropdown button
+{
+    display: inline-block;
+}
+
+.dropdown-content
+{
+    display: none;
+    position: absolute;
+    min-width: 160px;
+    background-color: #3c8eb4c3;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    margin-top: 8px;
+    padding: 10px 0;
+}
+
+.dropdown-content a, .dropdown-content button
+{
+    color: white;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.dropdown-content a:hover, .dropdown-content button:hover
+{
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.dropdown.active .dropdown-content
+{
+    display: block;
+}
+
+.dropdown-content button
+{
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.notifications-dropdown .dropdown-content
+{
+    width: 300px;
+    max-height: 400px;
+     overflow-y: auto;
+  }
+
+.icon
+{
+    font-size: 12px;
+}
+
+.create
+{
+    height: auto;
+    border: 1px solid white;
+    box-shadow: 3px 3px 8px grey;
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    margin: 15px;
+}
+
+.create .form-input
+{
+    height: 35px;
+    border-radius: 5px;
+    border: 1px solid grey;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.create .form-div
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.create .form-input:focus
+{
+    outline: none;
+    border: 2px solid #2596be;
+}
+
+.create p
+{
+    padding-left: 5px;
+    font-size: 15px;
+    display: inline-block;
+}
+
+.create p:hover
+{
+    animation: moving 2s;
+}
+
+@keyframes moving
+{
+    0%, 100% {
+        transform: translateX(0);
+    }
+    50% {
+        transform: translateX(10px);
+    }
+}
+
+.save_cancel
+{
+    margin: 10px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.save_cancel button
+{
+    margin-top: 10px;
+    height: 35px;
+    border-radius: 5px;
+    width: 70px;
+    border: none;
+}
+
+
+.save_cancel input
+{
+    margin-top: 10px;
+    width: 100px;
+    height: 30px;
+    border-radius: 5px;
+    border: 1px solid grey;
+}
+
+.save
+{
+    background-color: #3c8eb4c3;
+    color: white;
+}
+
+.cancel
+{
+    background-color: #888;
+    color: white;
+}
+
+button:hover
+{
+    cursor: pointer;
+    transform: translateY(-5px);
+    transition: 0.2s ease;
+    box-shadow: 3px 3px 8px grey;
+}
+
+.map-container
+{
+    width: 100%;
+    height: 400px;
+    display: inline-block;
+}
+
+
+.input-container
+{
+    margin-bottom: 10px;
+}
+
+.modal
+{
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+    justify-content: center;
+    align-items: center;
+    box-shadow: 3px 3px 8px grey;
+}
+
+.modal-content
+{
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    width: 80%;
+    border: 1px solid white;
+    box-shadow: 3px 3px 8px grey;
+}
+
+#saveButton
+{
+    margin-top: 10px;
+}
+
+.input-container
+{
+    display: flex;
+    flex-direction: column;
+}
+
+.input-container button
+{
+    margin-top: 15px;
+    margin-right: 5px;
+    width: 70px;
+    height: 35px;
+    border-radius: 5px;
+    border: none;
+    color: white;
+}
+
+.input-container input
+{
+    width: 20%;
+    height: 35px;
+    margin-top: 15px;
+    margin-right: 5px;
+    border-radius: 5px;
+    border: 1px solid grey;
+}
+
+.input-container input:focus
+{
+    outline: none;
+    border: 2px solid #2596be;
+}
+
+.point input[type="text"],
+.point input[type="file"],
+.point button,
+.point img {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 5px 2px;
+}
+
+.point input[type="file"]
+{
+    width: 15%;
+}
+
+.delete
+{
+    background-color: rgb(208, 61, 103);
+    color: white;
+}
+
+.map
+{
+    width: 400px;
+    height: 400px;
+}
+
+
+
+
+
+

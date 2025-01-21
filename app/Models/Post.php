@@ -12,6 +12,7 @@ use App\Models\Comment;
 
 class Post extends Model
 {
+    
     use HasFactory;
     protected $fillable =
     [
@@ -35,10 +36,16 @@ class Post extends Model
     {
         return $this->hasmany(Like::class)->with('user:id,name');
     }
-    // public function getLikedAttribute()
-    // {
-    //     $user_id = auth('sanctum')->user()->id;
-    //     return  $this->likes->where('user_id',$user_id)->isNotEmpty() ;
+    public function customToArray()
+     {
+         return
+          [
+             'id' => $this->id,
+              'post_info' => $this->post_info,
+               'post_image' => $this->post_image,
+                'created_at' => $this->created_at,
+                 'updated_at' => $this->updated_at,
+          ];
+     }
 
-    // }
 }

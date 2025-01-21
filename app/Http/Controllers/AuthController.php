@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Laravel\Sanctum\HasApiTokens;
 
 class AuthController extends Controller
 {
@@ -54,6 +54,9 @@ class AuthController extends Controller
         }
         $user   = User::where('email', $request->email)->firstOrFail();
         $token  = $user->createToken('auth_token')->plainTextToken;
+        $response = new Response('Login successful');
+
+
 
         return response()->json([
             'message'       => 'Login success',
@@ -66,7 +69,6 @@ class AuthController extends Controller
         Auth::user()->tokens->map->delete();
         return response()->json([
             'message' => 'Logout successfull',
-
         ]);
     }
 }

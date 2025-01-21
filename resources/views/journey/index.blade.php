@@ -1,6 +1,7 @@
     @extends('layouts.app')
     @section('content')
-    <link rel="stylesheet" href="{{asset('table.css')}}">
+    <link rel="stylesheet" href="{{asset('css/table.css')}}" type="text/css" media="all" />
+    <title>journeys</title>
     <div class="parent">
     <main class="table">
         <section class="table__header">
@@ -18,23 +19,8 @@
                     </tr>
                 </thead>
                 <tbody>
-
-
-
-                    @foreach ($journeys as $journey)
-                        <tr>
-
-                            <td><a href="{{ route('journey.show', $journey) }}"> {{ $journey->headline }} </a> </td>
-                            <td>{{ $journey->journey_charg }}</td>
-                            <td>{{ $journey->max_number }}</td>
-                            <td>{{ $journey->created_at }}</td>
-                            <td><button class="btn"><a href="{{ route('journey.edit', $journey) }}">edit </a></button> </td>
-
-                        </tr>
-                    @endforeach
-
+                 @each('journey.partials.journey_list_partial',$journeys ,'journey','journey.partials.journey_list_noItems')
                 </tbody>
-
             </table>
             {{$journeys->links()}}
         </section>

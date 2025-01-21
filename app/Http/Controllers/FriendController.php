@@ -11,12 +11,13 @@ use Auth;
 use App\Http\Resources\Friend as FriendResource;
 use Illuminate\Support\Facades\Validator;
 
+
 class FriendController extends Controller
 {
 
     public function index()
     {
-        $user = User::find(1);
+        $user = auth('sanctum')->user();
         $friends = $user->friends;
         if($friends)
         {
@@ -49,26 +50,29 @@ class FriendController extends Controller
                 $validator->errors(),403);
             }
 
+            else
+            {
+                $friend = Friend::create(
+                    [
+                        'user_id' =>  $request->user_id,
+                        'friend_id' => $request->friend_id,
+                        'status' => $request->status
+                    ]
+                );
 
-        $friend = Friend::create(
-            [
-                'user_id' =>  $request->user_id,
-                'friend_id' => $request->friend_id,
-                'status' => $request->status
-            ]
-        );
+                return response()->json(
+                    [
+                        'message' => 'success',
+                        'status' => 200
+                    ]
+                );
+            }
 
-        return response()->json(
-            [
-                'message' => 'success',
-                'status' => 200
-            ]
-        );
-
+            //event for the Friend request
     }
     public function show(Friend $friend)
     {
-
+        return response()->json(['friend' => $friend]);
     }
 
 
@@ -87,7 +91,8 @@ class FriendController extends Controller
             return response()->json(
                 $validator->errors(),403);
             }
-
+            else
+            {
                 $friend->status = $request->status;
                 $friend->save();
 
@@ -98,17 +103,30 @@ class FriendController extends Controller
                 'status' => 200
             ]
         );
+            }
+
     }
     public function destroy(Friend $friend)
     {
-        $friend_delete = Friend::find($friend->id);
-        $friend_delete->delete();
 
-        return response()->json(
-            [
-                'message' => 'success',
-                'status' => 200,
-            ]
-        );
+        $friend_delete = Friend::find($friend->id);
+        if(auth('sanctum')->user()->id == $friend_delete->firend_id || auth('sanctum')->user()->id == $friend_delete->user_id)
+        {
+            $friend_delete->delete();
+
+            return response()->json(
+                [
+                    'message' => 'success',
+                    'status' => 200,
+                ]
+            );
+        }
+        else
+        {
+            return response()->json(['message' => 'unautorized']);
+        }
+
     }
+
+
 }

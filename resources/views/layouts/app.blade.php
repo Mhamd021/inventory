@@ -1,90 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+    <title>Journeys</title>
     <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="csrf-token" content="{{ csrf_token() }}">
-<link rel="stylesheet" href="{{asset('applayout.css')}}" type="text/css" media="all" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="stylesheet" href="{{ asset('css/applayout.css') }}" type="text/css" media="all" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
+
 <body>
+    @php
+        $notifications = Auth::user()->notifications;
+@endphp
+    <div class="navbar">
+        <div class="left">
+            <a class="open-sidebar">☰</a>
+            <a title="dashboard" aria-label="this is dashboard link" href="{{ route('dashboard') }}"><i class="fas fa-home"></i></a>
+            @if (Auth::check() && Auth::user()->is_admin === 1)
+                <div class="dropdown" onclick="toggleDropdown(this)">
+                    <a aria-label="this is Journeys drop list " href="javascript:void(0)" class="dropbtn">Journeys</a>
+                    <div class="dropdown-content dropdown-content-left">
+                        <a aria-label="this is Journeys Create page link" href="{{ route('journey.create') }}">Create </a>
+                        <a aria-label="this is all Journeys page link" href="{{ route('journey.index')}}">Journeys </a>
+                        <a aria-label="this is all Trashed Journeys page link" href="{{ route('journey.trash')}}">Trashed </a>
+                    </div>
+                </div>
+                <a href="{{ route('profile.index') }}">Users</a>
+            @endif
+        </div>
+        <div class="right">
+            @if (auth()->check())
+            <div class="dropdown notifications-dropdown" onclick="toggleDropdown(this)">
+                <a aria-label="this is user notifications drop list" href="javascript:void(0)" class="dropbtn">
+                    <i class="fas fa-bell"></i>
+                    @if ($notifications->count() != 0)
+                    <span class="badge">{{ $notifications->count() }}</span>
+                    @endif
+                </a>
+                <div class="dropdown-content dropdown-content-right">
+                    @if ($notifications->count() == null)
+                    <a href=""> there are no notifications !</a>
+                    @elseif ($notifications->count() != null)
+                    @foreach ($notifications as $notification)
+                    @if (Auth::user()->is_admin === 1)
+                    @if ($notification->type === 'App\Notifications\NewUserNotification')
+                    <a href="">{{ $notification->data['name'] }} registered to owr website!</a>
 
-<div class="navbar">
-  <div class="left">
-    <a class="open-sidebar" onclick="toggleSidebar()" >☰</a>
-    <a href="{{ route('dashboard') }}"><i class="fas fa-home"></i></a>
-     <div class="dropdown">
-    <a href="javascript:void(0)" class="dropbtn" id="folded">Journeys</a>
-      <div class="dropdown-content">
-       <a href="{{route('journey.create')}}">create   <i class="fas fa-plus-circle icon"></i></a>
-    <a href="{{route('journey.index')}}">journeys  <i class="fas fa-location icon"></i></a>
-    <a href="{{route('journey.trash')}}">trashed  <i class="fas fa-trash icon"></i></a>
+                    @endif
+                    @endif
+                        @if ($notification->type === 'App\Notifications\PostCreatedNotification')
+                            <a href="">{{ $notification->data['user_name'] }} created a post at: {{ \Carbon\Carbon::parse($notification->data['created_at'])->format('Y-m-d H:i:s') }}</a>
+                        @elseif ($notification->type === 'App\Notifications\CommentOnPostNotification')
+                            <a href="">{{ $notification->data['user_name'] }} commented on your post at: {{ \Carbon\Carbon::parse($notification->data['created_at'])->format('Y-m-d H:i:s') }}</a>
+                        @elseif ($notification->type === 'App\Notifications\JourneyCreatedNotification')
+                            <a href="">{{ $notification->data['headline'] }} created at: {{ \Carbon\Carbon::parse($notification->data['created_at'])->format('Y-m-d H:i:s') }}</a>
+                            @elseif ($notification->type === 'App\Notifications\JourneyEditedNotification')
+                            <a href="">{{ $notification->data['headline'] }} created at: {{ \Carbon\Carbon::parse($notification->data['updated_at'])->format('Y-m-d H:i:s') }}</a>
+                        @endif
+                    @endforeach
+                    @endif
+                </div>
+            </div>
+
+                <div class="dropdown" onclick="toggleDropdown(this)">
+                    <a aria-label="this is user profile drop list" href="javascript:void(0)" class="dropbtn"><i class="fas fa-user"></i></a>
+                    <div class="dropdown-content dropdown-content-right">
+                        <a href="{{ route('profile.edit', Auth::user()) }}">{{ Auth::user()->name }}</a>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit">Logout</button>
+                        </form>
+                    </div>
+                </div>
+            @else
+                <a href="{{ route('login') }}">Login</a>
+            @endif
+        </div>
     </div>
-     </div>
-      <a href="#services" id="folded">Contact</a>
-  </div>
-  @if (auth()->check())
-  <div class="dropdown">
-    <a href="javascript:void(0)" class="dropbtn">{{Auth::user()->name}}</a>
-    <div class="dropdown-content">
-      <a href="{{route('profile.edit')}}">Profile</a>
-      <form method="POST" action="{{ route('logout') }}">
-        @csrf
-      <button type="submit">Logout </button>
+    <main>
+        @yield('content')
+    </main>
 
-      </form>
+    <script>
 
-    </div>
-  </div>
-  @else
-  <a href="{{route('login')}}">Login</a>
+        function toggleDropdown(element)
+        {
+            element.classList.toggle('active');
+        }
 
-  @endif
-</div>
-<main>
-@yield('content')
-</main>
+        document.addEventListener('click', function(event) {
+            var dropdowns = document.querySelectorAll('.dropdown');
+            dropdowns.forEach(function(dropdown) {
+                if (!dropdown.contains(event.target)) {
+                    dropdown.classList.remove('active');
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
-
-
-
-{{-- <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
-
-        <title>{{ config('app.name', 'Laravel') }}</title>
-
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    </head>
-    <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
-            @include('layouts.navigation')
-
-            <!-- Page Heading -->
-            @isset($header)
-                <header class="bg-white dark:bg-gray-800 shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endisset
-
-            <!-- Page Content -->
-            <main>
-                {{ $slot }}
-            </main>
-        </div>
-    </body>
-
-</html> --}}

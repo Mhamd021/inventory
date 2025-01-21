@@ -5,15 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\Like;
 use App\Models\Post;
 use App\Models\User;
-
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+
 use Laravel\Sanctum\Sanctum;
 use Laravel\Sanctum\HasApiTokens;
 
 
 class LikeController extends Controller
 {
+
 
     public function postlikes(Post $post)
     {
@@ -49,10 +49,23 @@ class LikeController extends Controller
 
     public function destroy(Like $like)
     {
-        $like->delete();
-        return response()->json([
-            'message' => 'success'
-        ]);
+        $post_user_id = $like->post->user_id;
+        if(auth('sanctum')->user()->id == $post_user_id || auth('sanctum')->user()->id == $like->user_id)
+        {
+            $like->delete();
+            return response()->json([
+                'message' => 'success'
+            ]);
+        }
+        else
+        {
+            return response()->json(
+                [
+                    'message' => 'you are not authorized to delete this comment'
+                ]
+            );
+        }
+
     }
 
     public function hasLiked(Post $post)

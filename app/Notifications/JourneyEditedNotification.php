@@ -8,6 +8,8 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use App\Models\Journey;
 use App\Events\EditJourney;
+use Illuminate\Support\Facades\Log;
+
 class JourneyEditedNotification extends Notification
 {
     use Queueable;
@@ -44,7 +46,7 @@ class JourneyEditedNotification extends Notification
     {
         return [
             'headline' => $this->journey->headline,
-            'description' => $this->journey->description
+            'updated_at' => $this->journey->updated_at
         ];
     }
 }

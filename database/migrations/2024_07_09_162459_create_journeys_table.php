@@ -16,8 +16,6 @@ return new class extends Migration
             $table->string('headline')->nullable();
             $table->date('start_day');
             $table->date('last_day');
-            $table->geography('start_point','point');
-            $table->geography('end_point','point');
             $table->longText('description');
             $table->integer('journey_charg');
             $table->integer('max_number');

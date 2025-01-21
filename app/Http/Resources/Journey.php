@@ -21,13 +21,10 @@ class Journey extends JsonResource
             'headline' => $this->headline,
             'start_day' => $this->start_day,
             'last_day' => $this->last_day,
-            'start_point' => $this->start_point,
-            'end_point' => $this->end_point,
             'description' => $this->description,
             'journey_charg' => $this->journey_charg,
             'max_number'=> $this->max_number,
             'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
          ];
 
 }
