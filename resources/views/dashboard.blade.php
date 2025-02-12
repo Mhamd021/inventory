@@ -8,7 +8,7 @@
 
       Pusher.logToConsole = true;
 
-      var pusher = new Pusher('7c415ea90b098cf04fd2', {
+      var pusher = new Pusher('xxxxxxxxxxxxxx', {
         cluster: 'ap2'
       });
 
