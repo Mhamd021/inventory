@@ -19,4 +19,9 @@ $('#profileImageInput').on('change', function() {
 $('#coverImageInput').on('change', function() {
     updateImagePreview(this, 'coverImagePreview');
 });
+
+$('#CreateProfileImage').on('change',function()
+{
+    updateImagePreview(this,'CreateImagePreview');
+});
 window.updateImagePreview = updateImagePreview;

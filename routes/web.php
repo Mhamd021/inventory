@@ -1,11 +1,13 @@
 <?php
 
+use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\JourneyController;
+use App\Http\Controllers\LikesController;
+use App\Http\Controllers\MarkAllNotificationsReadController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PointsController;
-
-
+use App\Http\Controllers\PostsController;
 
 Route::redirect('/', 'login', 301);
 
@@ -15,9 +17,12 @@ Route::get('/dashboard', function () {
 
 
 Route::middleware(['auth'])->group(function () {
+    Route::post('/mark-all-notifications-read', MarkAllNotificationsReadController::class)->name('notifications.markAllRead');
+
     Route::put('/changePassword', [ProfileController::class, 'updatePassword'])->name('profile.changePassword');
 });
 
+//users and profile
 Route::middleware('auth')->group(function () {
 
     Route::get('/users', 'App\Http\Controllers\ProfileController@index')->name('profile.index');
@@ -35,6 +40,7 @@ Route::middleware('auth')->group(function () {
 
 });
 
+//journeys and points
 Route::middleware('is_admin')->group(function () {
     Route::delete('/points/{id}', [PointsController::class, 'destroy'])->name('points.destroy');
     Route::get('restore/{id}', [JourneyController::class, 'restore'])->name('journey.restore');
@@ -43,4 +49,23 @@ Route::middleware('is_admin')->group(function () {
     Route::resource('journey', JourneyController::class);
 
 });
+//posts
+Route::middleware('auth')->group(function () {
+
+    Route::resource('/webComments', CommentsController::class);
+
+    Route::post('/like/{postId}', [LikesController::class, 'toggleLike'])->name('toggleLike');
+
+
+    Route::get('/webposts/{post}/comment-count', [PostsController::class, 'getCommentCount']);
+    Route::get('/webposts/{post}/likes-count', [PostsController::class, 'getLikesCount']);
+
+
+    Route::get('/webposts/{post}/comments', [PostsController::class, 'getComments'])->name('posts.comments');
+
+    Route::resource('webPosts', PostsController::class);
+});
+
+
+
 require __DIR__ . '/auth.php';

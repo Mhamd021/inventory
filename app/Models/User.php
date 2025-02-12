@@ -62,6 +62,12 @@ class User extends Authenticatable
     {
         return $this->hasmany(Like::class)->with('post');
     }
+
+    public function hasLiked($postId)
+    {
+        return $this->likes()->where('post_id',$postId)->exists();
+    }
+
     // here the view is faster than the query builder so it stays related to the view
 
     // public function friends($userId)

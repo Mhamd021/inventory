@@ -46,7 +46,8 @@ class JourneyEditedNotification extends Notification
     {
         return [
             'headline' => $this->journey->headline,
-            'updated_at' => $this->journey->updated_at
+            'updated_at' => $this->journey->updated_at,
+            'journey_id' => $this->journey->id
         ];
     }
 }

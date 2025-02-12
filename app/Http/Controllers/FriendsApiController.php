@@ -3,16 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Friend;
-use App\Models\User;
 use App\FriendStatus;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\Enum;
-use Auth;
-use App\Http\Resources\Friend as FriendResource;
 use Illuminate\Support\Facades\Validator;
 
 
-class FriendController extends Controller
+class FriendsApiController extends Controller
 {
 
     public function index()
@@ -25,15 +22,13 @@ class FriendController extends Controller
                 [
                     'message' => 'success',
                     'friends' => $friends
-                ]
+                ],
+                200
             );
         }
         else
         {
-            return response()->json([
-                "message" => "you have no friends go ahead and add some friends !",
-                404
-            ]);
+            return response()->json(['message' => 'you have no friends go ahead and add some friends!'], 404);
         }
         }
     public function store(Request $request)
@@ -46,9 +41,13 @@ class FriendController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(
-                $validator->errors(),403);
+
+                return response()->json(
+                    $validator->errors(),403);
+
+
             }
+
 
             else
             {
@@ -60,19 +59,25 @@ class FriendController extends Controller
                     ]
                 );
 
-                return response()->json(
-                    [
-                        'message' => 'success',
-                        'status' => 200
-                    ]
-                );
+                    return response()->json(
+                        [
+                            'message' => 'success',
+
+                        ]
+                        ,200
+                    );
+
+
             }
 
             //event for the Friend request
     }
     public function show(Friend $friend)
     {
-        return response()->json(['friend' => $friend]);
+        return response()->json([
+            'friend' => $friend,
+
+        ],   200);
     }
 
 
@@ -110,7 +115,7 @@ class FriendController extends Controller
     {
 
         $friend_delete = Friend::find($friend->id);
-        if(auth('sanctum')->user()->id == $friend_delete->firend_id || auth('sanctum')->user()->id == $friend_delete->user_id)
+        if(auth('sanctum')->user()->id == $friend_delete->friend_id || auth('sanctum')->user()->id == $friend_delete->user_id)
         {
             $friend_delete->delete();
 

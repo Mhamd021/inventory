@@ -44,6 +44,7 @@ class PostCreatedNotification extends Notification
         return [
             'created_at' => $this->post->created_at,
             'user_name' => $this->post->user->name,
+            'post_id' => $this->post->id,
         ];
     }
 }

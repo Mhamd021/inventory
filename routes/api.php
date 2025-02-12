@@ -2,11 +2,12 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\JourneyController;
-use App\Http\Controllers\PostController;
-use App\Http\Controllers\CommentController;
-use App\Http\Controllers\FriendController;
+use App\Http\Controllers\CommentApiController;
+use App\Http\Controllers\FriendsApiController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PostApiController;
+use App\Http\Controllers\JourneyApiController;
+use App\Http\Controllers\LikeApiController;
 
 //auth
 Route::get('/user', function (Request $request) {
@@ -17,32 +18,31 @@ Route::get('/user', function (Request $request) {
 Route::middleware('ensure_frontend_requests_are_stateful', 'auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     //posts
-    Route::apiResource('posts', PostController::class);
-    Route::post('ModifyPost/{post}', 'App\Http\Controllers\PostController@ModifyPost');
-    //post comments
-    Route::get('postcomments/{post}', 'App\Http\Controllers\CommentController@postcomments');
-
+    Route::post('ModifyPost/{post}', 'App\Http\Controllers\PostApiController@ModifyPost');
     //likes
-    Route::get('hasliked/{post}', 'App\Http\Controllers\LikeController@hasLiked');
-    Route::post('like', 'App\Http\Controllers\LikeController@store');
-    Route::get('postlikes/{post}', 'App\Http\Controllers\LikeController@postlikes');
-    Route::get('userlikes/{user}', 'App\Http\Controllers\LikeController@userlikes');
-    Route::delete('like/{like}', 'App\Http\Controllers\LikeController@destroy');
-    Route::get('likes', 'App\Http\Controllers\PostController@likes');
+    Route::middleware('auth')->group(function ()
+    {
+        Route::apiResource('posts', PostApiController::class);
+        Route::post('apiPosts/like/{postId}', [LikeApiController::class, 'toggleLike']);
+        Route::get('apiPosts/{post}/comments', [PostApiController::class, 'getComments']);
+        Route::get('apiPosts/{post}/comment-count', [PostApiController::class, 'getCommentCount']);
+        Route::get('apiPosts/{post}/likes-count', [PostApiController::class, 'getLikesCount']);
 
+    });
+
+    Route::get('hasliked/{post}', 'App\Http\Controllers\LikeApiController@hasLiked');
+    Route::get('userlikes/{user}', 'App\Http\Controllers\LikeApiController@userlikes');
     //comments
-    Route::apiResource('comments', CommentController::class);
-    Route::post('ModifyComment/{comment}', 'App\Http\Controllers\CommentController@ModifyComment');
+    Route::apiResource('comments', CommentApiController::class);
+    Route::post('ModifyComment/{comment}', 'App\Http\Controllers\CommentApiController@ModifyComment');
     //friends
-    Route::apiResource('friends', FriendController::class);
+    Route::apiResource('friends', FriendsApiController::class);
 });
-
-
 //auth
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
 //journeys
 
-Route::get('/journeys', 'App\Http\Controllers\JourneyController@apijourney');
-Route::get('/journey/{journey}', 'App\Http\Controllers\JourneyController@showjourneyapi');
+Route::get('/journeys', [JourneyApiController::class , 'index']);
+Route::get('/journey/{journey}', [JourneyApiController::class , 'show']);

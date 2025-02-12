@@ -8,8 +8,6 @@
 
     <link rel="stylesheet" href="{{asset('css/show.css')}}">
 
-
-
     <div id="map"> </div>
     {{-- <p>{{$journey->headline}}</p>
     <p>{{$journey->start_day}}</p>
@@ -17,8 +15,6 @@
     <p>{{$journey->journey_charg}}</p>
     <p>{{$journey->max_number}}</p>
     <p>{{$journey->description}}</p> --}}
-
-
 
     <script>
         const points = @json($points);

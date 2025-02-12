@@ -1,10 +1,16 @@
 function editModal(modalId) {
-    $('#' + modalId).css('display', 'flex');
+    let modal = $('#' + modalId);
+    modal.css('display', 'flex').removeClass('fade-out').addClass('fade-in');
 }
 
 function closeModal(modalId, previewElementId, originalImageSrc) {
 
-    $('#' + modalId).css('display', 'none');
+    let modal = $('#' + modalId);
+    modal.removeClass('fade-in').addClass('fade-out');
+    setTimeout(function() {
+        modal.css('display', 'none').removeClass('fade-out');
+    }, 300);
+
     const $previewElement = $('#' + previewElementId);
     $previewElement.attr('src', originalImageSrc);
     $previewElement.css('display', originalImageSrc ? 'block' : 'none');
@@ -42,11 +48,25 @@ function validateForm() {
 
 function clearErrorMessages() {
     var errorDiv = document.getElementById('error_message');
-    errorDiv.innerHTML = '';
-    errorDiv.style.display = 'none';
-    document.getElementById('current_password').value = '';
-    document.getElementById('password').value = '';
-    document.getElementById('password_confirmation').value = '';
+    if (errorDiv) {
+        errorDiv.innerHTML = '';
+        errorDiv.style.display = 'none';
+    }
+
+    var currentPasswordInput = document.getElementById('current_password');
+    if (currentPasswordInput) {
+        currentPasswordInput.value = '';
+    }
+
+    var passwordInput = document.getElementById('password');
+    if (passwordInput) {
+        passwordInput.value = '';
+    }
+
+    var passwordConfirmationInput = document.getElementById('password_confirmation');
+    if (passwordConfirmationInput) {
+        passwordConfirmationInput.value = '';
+    }
 }
 window.editModal = editModal;
 window.closeModal = closeModal;

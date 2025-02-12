@@ -48,6 +48,7 @@ class CommentOnPostNotification extends Notification
         return [
             'created_at' => $this->comment->created_at,
             'user_name' => $this->comment->user->name,
+            'post_id' => $this->comment->post_id
 
         ];
     }

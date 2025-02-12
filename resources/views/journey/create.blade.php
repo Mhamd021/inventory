@@ -1,5 +1,8 @@
 @extends('layouts.app')
 @section('content')
+
+@vite(['resources/js/app.js', 'resources/css/app.css'])
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>journeys</title>
     <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
     <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet" />
@@ -51,10 +54,8 @@
             <p>points</p>
                 <div class="input-container">
                     <div id="points"></div>
-                    <button class="save" type="button" onclick="addPoint()">add point</button>
+                    <button title="add point" class="save" type="button" onclick="addPoint()"><i class="fas fa-plus-circle" ></i> point</button>
                 </div>
-
-
             @if ($errors->any())
                 <div class="alert alert-danger">
                     <ul>
@@ -71,106 +72,21 @@
 
                     <p>Please Choose your point on the map</p>
                     <div id="map" class="map-container"></div>
-                    <button  id="saveButton" onclick="savePoint()">Save Point</button>
+                    <div class="save_cancel">
+                        <button class="save"  type="button"  id="saveButton" onclick="closeModal('mapModal')">Save</button>
+                        <button type="button" class="cancel" onclick="closeModal('mapModal')">close</button>
+                    </div>
                 </div>
             </div>
             <div class="save_cancel">
                 <button class="save" type="submit"> <i style="color: white" class="fas fa-check-circle"> &nbsp;</i>save
                 </button>
-                <button class="cancel" type="button"><i style="color: white" class="fas fa-times-circle"></i><a
-                        style="text-decoration: none; color:white" href="{{ route('dashboard') }}"> cancel</a></button>
+                <i style="color: white" class="fas fa-times-circle"></i><a
+                        style="text-decoration: none; color:white" href="{{ route('dashboard') }}"><button class="cancel" type="button"> cancel </button></a>
             </div>
 
         </div>
 
     </form>
-    <script type="text/javascript">
-        let marker;
 
-        function openMap(latInputId, lngInputId) {
-            const latField = document.getElementById(latInputId);
-            const lngField = document.getElementById(lngInputId);
-            document.getElementById('mapModal').style.display = 'flex';
-            event.preventDefault();
-
-            mapboxgl.accessToken =
-                'pk.eyJ1IjoiZG9uMjEiLCJhIjoiY20yOTZtMjhoMDB3YzJqczc2YWhtenJrNiJ9.IKwkfvJWrxOZkYBlwsAhNA';
-            const map = new mapboxgl.Map({
-                container: 'map',
-                style: 'mapbox://styles/mapbox/streets-v12',
-                center: [36.059125, 36.340569],
-                zoom: 7
-            });
-            map.on('click', (event) => {
-                const coords = Object.keys(event.lngLat).map((key) => event.lngLat[key]);
-                const end = {
-                    type: 'FeatureCollection',
-                    features: [{
-                        type: 'Feature',
-                        properties: {},
-                        geometry: {
-                            type: 'Point',
-                            coordinates: coords
-                        }
-                    }]
-                };
-                if (map.getLayer('end')) {
-                    map.getSource('end').setData(end);
-                } else {
-                    map.addLayer({
-                        id: 'end',
-                        type: 'circle',
-                        source: {
-                            type: 'geojson',
-                            data: {
-                                type: 'FeatureCollection',
-                                features: [{
-                                    type: 'Feature',
-                                    properties: {},
-                                    geometry: {
-                                        type: 'Point',
-                                        coordinates: coords
-                                    }
-                                }]
-                            }
-                        },
-                        paint: {
-                            'circle-radius': 10,
-                            'circle-color': '#f30'
-                        }
-                    });
-                }
-                latField.value = coords[1];
-                lngField.value = coords[0];
-            });
-
-            
-        }
-
-        function savePoint() {
-            document.getElementById('mapModal').style.display = 'none';
-            event.preventDefault();
-        }
-
-        function addPoint() {
-            let index = document.querySelectorAll('.point').length;
-            let pointHtml =
-                ` <div class="point" id="point-${index}">
-                    <input type="text" name="points[${index}][point_description]" placeholder="Description" value="{{ old('points[${index}][point_description]') }}" required>
-                     <button class="cancel" onclick="openMap('lat${index}', 'lng${index}')">location</button>
-                      <input type="text" id="lat${index}" name="points[${index}][latitude]" placeholder="Latitude" value="{{ old('points[${index}][latitude]') }}" readonly>
-                      <input type="text" id="lng${index}" name="points[${index}][longitude]" placeholder="Longitude" value="{{ old('points[${index}][longitude]') }}" readonly>
-                         <input type="file" name="points[${index}][image]" value="{{ old('points[${index}][image]') }}">
-                         <button class="cancel" type="button" onclick="removePoint(${index})">remove</button>
-                       </div> `;
-            document.getElementById('points').insertAdjacentHTML('beforeend', pointHtml);
-        }
-
-        function removePoint(index)
-         {
-            let point = document.getElementById(`point-${index}`);
-             point.remove();
-
-         }
-    </script>
 @endsection

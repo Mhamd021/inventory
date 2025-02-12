@@ -13,6 +13,7 @@
 <body>
     @php
         $notifications = Auth::user()->notifications;
+        $unreadNotifications = Auth::user()->unreadNotifications;
 @endphp
     <div class="navbar">
         <div class="left">
@@ -29,14 +30,24 @@
                 </div>
                 <a href="{{ route('profile.index') }}">Users</a>
             @endif
+            <div class="dropdown" onclick="toggleDropdown(this)">
+                <a aria-label="this is Journeys drop list " href="javascript:void(0)" class="dropbtn">Posts</a>
+                <div class="dropdown-content dropdown-content-left">
+                    <a href="{{route('webPosts.create')}}">Create</a>
+                    <a aria-label="this is all Journeys page link" href="{{ route('webPosts.index')}}">My Posts </a>
+                    <a aria-label="this is all Journeys page link" href="{{ route('webPosts.index')}}">Feeds </a>
+                </div>
+            </div>
+            <a href="{{route('profile.index')}}">users</a>
         </div>
         <div class="right">
+            <a href=""><i class="fa fa-user-friends"></i></a>
             @if (auth()->check())
             <div class="dropdown notifications-dropdown" onclick="toggleDropdown(this)">
                 <a aria-label="this is user notifications drop list" href="javascript:void(0)" class="dropbtn">
                     <i class="fas fa-bell"></i>
-                    @if ($notifications->count() != 0)
-                    <span class="badge">{{ $notifications->count() }}</span>
+                    @if ($unreadNotifications->count() != 0)
+                    <span class="badge">{{ $unreadNotifications->count() }}</span>
                     @endif
                 </a>
                 <div class="dropdown-content dropdown-content-right">
@@ -44,14 +55,14 @@
                     <a href=""> there are no notifications !</a>
                     @elseif ($notifications->count() != null)
                     @foreach ($notifications as $notification)
+
                     @if (Auth::user()->is_admin === 1)
                     @if ($notification->type === 'App\Notifications\NewUserNotification')
-                    <a href="">{{ $notification->data['name'] }} registered to owr website!</a>
-
+                    <a href="{{route('profile.index')}}">{{ $notification->data['name'] }} registered to our website!</a>
                     @endif
                     @endif
                         @if ($notification->type === 'App\Notifications\PostCreatedNotification')
-                            <a href="">{{ $notification->data['user_name'] }} created a post at: {{ \Carbon\Carbon::parse($notification->data['created_at'])->format('Y-m-d H:i:s') }}</a>
+                            <a >{{ $notification->data['user_name'] }} created a post at: {{ \Carbon\Carbon::parse($notification->data['created_at'])->format('Y-m-d H:i:s') }}</a>
                         @elseif ($notification->type === 'App\Notifications\CommentOnPostNotification')
                             <a href="">{{ $notification->data['user_name'] }} commented on your post at: {{ \Carbon\Carbon::parse($notification->data['created_at'])->format('Y-m-d H:i:s') }}</a>
                         @elseif ($notification->type === 'App\Notifications\JourneyCreatedNotification')
@@ -60,6 +71,11 @@
                             <a href="">{{ $notification->data['headline'] }} created at: {{ \Carbon\Carbon::parse($notification->data['updated_at'])->format('Y-m-d H:i:s') }}</a>
                         @endif
                     @endforeach
+
+                    <form action="{{ route('notifications.markAllRead') }}" method="POST">
+                        @csrf
+                        <button class="button" type="submit" class="btn btn-primary">Mark All As Read</button>
+                    </form>
                     @endif
                 </div>
             </div>
@@ -70,7 +86,7 @@
                         <a href="{{ route('profile.edit', Auth::user()) }}">{{ Auth::user()->name }}</a>
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-                            <button type="submit">Logout</button>
+                            <button class="button"  type="submit">Logout</button>
                         </form>
                     </div>
                 </div>

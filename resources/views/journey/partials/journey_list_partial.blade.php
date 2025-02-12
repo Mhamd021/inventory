@@ -3,5 +3,5 @@
     <td>{{ $journey->journey_charg }}</td>
     <td>{{ $journey->max_number }}</td>
     <td>{{ $journey->created_at }}</td>
-    <td><button class="btn"><a href="{{ route('journey.edit', $journey) }}">edit </a></button> </td>
+    <td><a href="{{ route('journey.edit', $journey) }}"><button class="btn">edit </button></a> </td>
 </tr>

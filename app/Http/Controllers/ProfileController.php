@@ -36,14 +36,14 @@ class ProfileController extends Controller
                 'profile.edit',
                 [
                     'user' => $user,
-                    'friends' => $user->friends->count()
+                    'friends' => $user->friends->count(),
+
                 ]
             );
         } else {
             abort(403);
         }
     }
-    //updating profile image
     public function uploadProfileImage(Request $request, User $user)
     {
         $request->validate([

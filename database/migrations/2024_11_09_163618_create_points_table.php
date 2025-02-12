@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('points', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('journey_id')->references('id')->on('journeys')->onDelete('cascade');
+            $table->foreignId('journey_id')->constrained()->onDelete('cascade');
             $table->integer('order');
             $table->text('point_description');
             $table->string('image')->nullable();
-            $table->geography('location','point');
+            $table->geometry('location');
             $table->timestamps();
         });
     }

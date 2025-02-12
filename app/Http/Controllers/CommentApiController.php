@@ -6,11 +6,10 @@ use App\Models\Comment;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Events\CommentOnPost;
-use App\Http\Resources\Comment as CommentResource;
-use Illuminate\Support\Facades\Auth;
 
 
-class CommentController extends Controller
+
+class CommentApiController extends Controller
 {
 
     public function postcomments(Post $post)
@@ -27,23 +26,33 @@ class CommentController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'comment_info' => ['bail', 'required', 'string'],
-        ]);
+        try {
+            $validated = $request->validate([
+                'comment_info' => ['bail', 'required', 'string'],
+                'post_id' => ['required', 'integer', 'exists:posts,id'],
+            ]);
 
-        $comment =  Comment::create([
-            'comment_info' => $request->comment_info,
-            'user_id' => $request->user_id,
-            'post_id' => $request->post_id,
+            $comment = Comment::create([
+                'comment_info' => $request->comment_info,
+                'user_id' => auth('sanctum')->user()->id,
+                'post_id' => $request->post_id,
+            ]);
 
-        ]);
-
-        event(new CommentOnPost($comment));
-
-        return response()->json([
-            'message' => 'comment created successfully',
-            'comment' => $comment
-        ]);
+            return response()->json([
+                'message' => 'comment created successfully',
+                'comment' => $comment,
+            ], 200);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'message' => 'Validation error',
+                'errors' => $e->errors(),
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'An error occurred',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**

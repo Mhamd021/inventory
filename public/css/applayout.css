@@ -85,7 +85,7 @@ h1
     .navbar .left a, .navbar .right a {
         margin: 5px;
     }
-    
+
 }
 
 .dropdown
@@ -105,6 +105,21 @@ h1
     right: 0;
     left: auto;
 }
+.dropdown-content-right .button
+{
+    padding: 10px;
+    margin: 10px;
+    background-color: transparent;
+    color: white;
+    position: static;
+
+}
+.dropdown-content-right .button:hover
+{
+    color: black;
+    background-color: white;
+    box-shadow: none;
+}
 .dropdown a, .dropdown button
 {
     display: inline-block;
@@ -115,8 +130,8 @@ h1
     display: none;
     position: absolute;
     min-width: 160px;
-    background-color: #3c8eb4c3;
-    border: 1px solid #ccc;
+    background-color: rgba(99, 160, 210, 0.741);
+    border: 1px solid white;
     border-radius: 5px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     z-index: 1;
@@ -136,7 +151,7 @@ h1
 
 .dropdown-content a:hover, .dropdown-content button:hover
 {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.292);
 }
 
 .dropdown.active .dropdown-content
@@ -248,20 +263,19 @@ h1
 {
     background-color: #3c8eb4c3;
     color: white;
+    transition:  transform 0.2s ease;
 }
 
 .cancel
 {
     background-color: #888;
     color: white;
+    transition:  transform 0.2s ease;
 }
 
-button:hover
+.save:hover , .cancel:hover , .delete:hover
 {
-    cursor: pointer;
-    transform: translateY(-5px);
-    transition: 0.2s ease;
-    box-shadow: 3px 3px 8px grey;
+    transform : translateY(-5px);
 }
 
 .map-container
@@ -291,6 +305,7 @@ button:hover
     justify-content: center;
     align-items: center;
     box-shadow: 3px 3px 8px grey;
+    animation: fadeIn 0.5s;
 }
 
 .modal-content
@@ -359,6 +374,7 @@ button:hover
 {
     background-color: rgb(208, 61, 103);
     color: white;
+    transition: transform 0.2s ease;
 }
 
 .map
@@ -366,9 +382,270 @@ button:hover
     width: 400px;
     height: 400px;
 }
+.post_image-preview {
+    z-index: 1000;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    max-width: 700px;
+    max-height: 600px;
+    display: block;
+    margin: auto;
+    border: solid 1px black;
+}
+.image-lable
+{
+    display: block;
+    width: 160px;
+    padding: 7px 17px;
+    background-color: #3c8eb4c3;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+    margin-top: 10px;
+
+}
+.image-lable:hover
+{
+    transform: translateY(-5px);
+    transition: 0.2s ease;
+    box-shadow: 3px 3px 8px grey;
+}
+.posts_body
+{
+    display: flex;
+    justify-content: center;
+    margin-top: 10px ;
+}
+.whatsOnYourMind
+{
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    margin: 10px;
+}
+.whatsOnYourMind .text
+{
+    border-radius:10px ;
+    border: none;
+}
+.post_card
+{
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    height: auto;
+    max-height: 600px ;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    margin: 10px;
+
+}
+.post_card .post_image
+{
+    width: auto;
+    height: auto;
+    max-height: 400px;
+    object-fit: contain;
+}
+.post_card .info
+{
+    margin: 5px;
+    padding: 10px;
+
+}
+.count
+{
+    display: flex;
+    justify-content: space-between;
+    padding: 5px;
+    margin: 5px;
+}
+.functions
+{
+    display: flex;
+    justify-content: space-around;
+    padding: 5px;
+    margin: 5px;
+}
+.user_image_name
+{
+    display: flex;
+}
+.user_image_name img
+{
+    margin: 5px;
+    border-radius: 50%;
+    width: 55px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    display: inline-block;
+
+}
+.user_image_name label
+{
+    font-size: 15px;
+    font-weight: 600;
+    display: inline-block;
+    cursor: pointer;
+}
+.user_image_name .date
+{
+    display: flex;
+    flex-direction: column;
+}
+hr
+{
+ margin: 5px;
+}
+
+.Comments-content {
+    background-color: #fff;
+    color: black;
+    border: 1px solid #888;
+    width: 500px;
+    min-height: 500px;
+    max-height: 600px ;
+    position: relative;
+    box-shadow: 0 0.075em 1em #0b0c0e4d;
+    border-radius: 1em;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+}
+
+.comments_section
+{
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.comments_section .comment
+{
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+}
+.comment .comment-user img
+{
+    margin: 5px;
+    border-radius: 50%;
+    width: 55px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    display: inline-block;
+}
+.create_comment
+{
+display: flex;
+flex-direction: column;
+}
+.create_comment input
+{
+    width: 90%;
+    border-radius: 10px;
+}
+.close {
+    position: sticky;
+    top: 0;
+    right: 0;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: white;
+}
+.close button {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 5px;
+    font-size: 1.5rem;
+    position: relative;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    transition: background-color 0.3s, transform 0.2s;
+
+}
+
+.close button::before {
+    content: '\00D7';
+    font-weight: bold;
+}
+
+.close button:hover {
+    background-color: rgb(208, 61, 103);
+    color: white;
+}
+.sticky-footer {
+    position: sticky;
+    bottom: 0;
+    background: white;
+    padding: 10px;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3);
+    z-index: 10;
+}
 
 
+.functions .like, .functions .comment, .functions .share {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
 
+.functions .like:hover, .functions .comment:hover, .functions .share:hover {
+    transform: scale(1.05);
+}
+.create_comment i:hover
+{
+    color: #27658e;
+}
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    border-top-color: #27658e;
+    animation: spin 1s ease infinite;
+}
 
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
 
+#loading-spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+}
+@keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
 
+@keyframes fadeOut {
+    from {opacity: 1;}
+    to {opacity: 0;}
+}
+
+.fade-out {
+    animation: fadeOut 0.4s;
+}
+.fade-in {
+    animation: fadeIn 0.4s ;
+}
+.posts_body i:hover{
+    color: #27658e;
+    cursor: pointer;
+}

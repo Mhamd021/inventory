@@ -3,5 +3,5 @@
   <td>{{ $user->name }}</td>
   <td>{{ $user->email }}</td>
   <td>{{ $user->created_at }}</td>
-  <td><button class="btn"><a href="{{ route('profile.edit',$user) }}">edit </a></button> </td>
+  <td><a href="{{ route('profile.edit',$user) }}"><button class="btn">edit </button></a> </td>
           </tr>
