@@ -13,6 +13,7 @@ class Points extends Model
 {
     use HasFactory;
     use HasSpatial;
+   
     protected static function boot() {
          parent::boot();
           static::deleting(function ($point)
@@ -35,7 +36,22 @@ class Points extends Model
 
         'location' => Point::class,
     ];
+    protected $appends = [
+        'coordinates',
+    ];
 
+    public function getCoordinatesAttribute()
+    {
+        if ($this->location) {
+            return [
+                $this->location->latitude,
+                $this->location->longitude,
+            ];
+        }
+        return null;
+    }
+    
+   
     public function journey()
     {
         return $this->belongsTo(Journey::class);

@@ -14,16 +14,13 @@ class JourneyApiController extends Controller
 
     public function index()
     {
-        $jou = Journey::get();
-        if ($jou) {
-            $journeys = JourneyResource::collection($jou);
+        
+            $journeys = Journey::with('points')->get();
             return response()->json([
                 "journeys" => $journeys,
 
             ]);
-        } else {
-            return response()->json(['message' => 'No record available'], 200);
-        }
+         
     }
 
     public function show(Journey $journey)

@@ -14,6 +14,7 @@ class FriendsApiController extends Controller
 
     public function index()
     {
+        
         $user = auth('sanctum')->user();
         $friends = $user->friends;
         if($friends)
